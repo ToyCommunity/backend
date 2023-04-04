@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "auth.secret.key",
+      "type": "java.lang.String",
+      "description": "Description for auth.secret.key."
+  }
+] }

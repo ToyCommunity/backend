@@ -1,0 +1,23 @@
+spring:
+
+  jackson:
+    default-property-inclusion: non_null
+
+  datasource:
+    hikari:
+      jdbc-url: jdbc:h2:mem:testdb:MODE=MYSQL
+
+  jpa:
+    properties:
+      hibernate:
+        ddl-auto: update
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+    show-sql: true
+    open-in-view: false
+
+
+  auth:
+    secret: shinity
+

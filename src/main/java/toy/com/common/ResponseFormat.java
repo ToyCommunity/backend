@@ -11,7 +11,7 @@ public class ResponseFormat<T> {
 
     private T data;
 
-    private status status;
+    private Status status;
 
     public ResponseFormat(ResponseCode responseCode, T data) {
         this.bindMeta(responseCode);
@@ -19,7 +19,7 @@ public class ResponseFormat<T> {
     }
 
     private void bindMeta(ResponseCode responseCode) {
-        this.status = new status(responseCode);
+        this.status = new Status(responseCode);
     }
 
     public static <T> ResponseFormat<T> normal(T data) {
@@ -32,17 +32,17 @@ public class ResponseFormat<T> {
 
     @Getter
     @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-    public static class status {
+    public static class Status {
 
         private int code;
         private String message;
 
-        public status(int code, String message) {
+        public Status(int code, String message) {
             this.code = code;
             this.message = message;
         }
 
-        public status(ResponseCode responseCode) {
+        public Status(ResponseCode responseCode) {
             this.code = responseCode.getCode();
             this.message = responseCode.getMessage();
         }

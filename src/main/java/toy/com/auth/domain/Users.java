@@ -11,6 +11,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toy.com.auth.exception.UserStatusException;
 
+/*
+TODO(박종빈)
+ 1. 해당 엔티티는 user 도메인으로 이관(패키지 분리 필요)
+ 2. user class 이름 생각 해보기
+ */
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

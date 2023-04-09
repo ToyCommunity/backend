@@ -1,6 +1,6 @@
 package toy.com.user.dto.response;
 
-public record MemberJoinResponse(
+public record UserJoinResponse(
 	String email,
 	String nickname
 ) {

@@ -44,6 +44,8 @@ dependencies {
 
 	// swagger open Api
 	implementation 'org.springdoc:springdoc-openapi-ui:1.5.7'
+    // Bcrypt 암호화
+    implementation group: 'org.mindrot', name: 'jbcrypt', version: '0.4'
 
 	// jwt
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'

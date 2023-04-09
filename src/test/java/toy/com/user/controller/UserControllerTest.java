@@ -27,7 +27,6 @@ import toy.com.user.service.UserService;
 class UserControllerTest {
 
 	private static final String ERROR = "ERROR";
-	private static final String SUCCESS = "SUCCESS";
 
 	@Autowired
 	private MockMvc mockMvc;

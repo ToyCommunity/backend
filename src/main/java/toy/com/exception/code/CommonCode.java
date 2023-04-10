@@ -16,7 +16,9 @@ public enum CommonCode {
 	ERROR("C-999"),
 
 	// User-000
-	DUPLICATED_EMAIL("U-001");
+	DUPLICATED_EMAIL("U-001"),
+	WRONG_FORM_INPUT("U-002"),
+	NOT_FOUND_USER("U-003");
 
 	private final String code;
 }

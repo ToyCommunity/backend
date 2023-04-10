@@ -14,7 +14,6 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import toy.com.user.exception.UserStatusException;
 
 @Getter
 @EqualsAndHashCode(of = "id")
@@ -30,10 +29,10 @@ public class User {
 	@Column(nullable = false, length = 50)
 	private String email;
 
-	@Column(nullable = false, length = 20)
+	@Column(nullable = false)
 	private String password;
 
-	@Column(nullable = false, length = 10)
+	@Column(nullable = false)
 	private String nickname;
 
 	@Enumerated(EnumType.STRING)
@@ -49,16 +48,5 @@ public class User {
 		this.nickname = nickname;
 		this.userRole = userRole;
 		this.userStatus = userStatus;
-	}
-
-	// 유저 상태를 확인한다
-	public void checkUserStatus() {
-
-		if (UserStatus.REPORTED == userStatus) {
-			throw new UserStatusException("신고로 등록된 유저입니다");
-		}
-		if (UserStatus.WITHDRAWAL == userStatus) {
-			throw new UserStatusException("탈퇴한 회원입니다");
-		}
 	}
 }

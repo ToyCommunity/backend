@@ -6,7 +6,9 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import toy.com.exception.CustomException;
 import toy.com.exception.code.ErrorCode;
+import toy.com.user.PasswordEncrypt;
 import toy.com.user.domain.User;
+import toy.com.user.dto.response.TokenResponse;
 import toy.com.user.repository.UserRepository;
 
 /**
@@ -18,6 +20,7 @@ import toy.com.user.repository.UserRepository;
 public class UserService {
 
 	private final UserRepository userRepository;
+	private final TokenFactory tokenFactory;
 
 	public void join(User user) {
 		if (userRepository.existsByEmail(user.getEmail())) {
@@ -25,6 +28,18 @@ public class UserService {
 		}
 
 		userRepository.save(user);
+	}
+
+	public TokenResponse login(User user) {
+		User joinUser = userRepository.findByEmail(user.getEmail())
+			.orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+
+		if (!PasswordEncrypt.isMatch(user.getPassword(), joinUser.getPassword())) {
+			throw new CustomException(ErrorCode.PASSWORD_NOT_MATCH);
+		}
+
+		TokenResponse tokenResponse = tokenFactory.issueToken(joinUser.getId());
+		return tokenResponse;
 	}
 
 	@Transactional(readOnly = true)

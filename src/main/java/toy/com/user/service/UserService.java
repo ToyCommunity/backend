@@ -21,6 +21,7 @@ public class UserService {
 
 	private final UserRepository userRepository;
 	private final TokenFactory tokenFactory;
+	private final RedisService redisService;
 
 	public void join(User user) {
 		if (userRepository.existsByEmail(user.getEmail())) {
@@ -39,6 +40,7 @@ public class UserService {
 		}
 
 		TokenResponse tokenResponse = tokenFactory.issueToken(joinUser.getId());
+		redisService.setToken(tokenResponse.refreshToken(), joinUser.getId());
 		return tokenResponse;
 	}
 

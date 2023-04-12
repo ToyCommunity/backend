@@ -1,8 +1,4 @@
 spring:
-
-  jackson:
-    default-property-inclusion: non_null
-
   datasource:
     hikari:
       jdbc-url: jdbc:h2:mem:testdb:MODE=MYSQL
@@ -17,7 +13,13 @@ spring:
     show-sql: true
     open-in-view: false
 
+  redis:
+    host: localhost
+    port: 6379
 
-  auth:
-    secret: shinity
+jwt:
+  secret-key: ${JWT_SECRET_KEY}
+  access-token-expired-time: ${JWT_ACCESSTOKEN_EXPIRED_TIME_MS}
+  refresh-token-expired-time: ${JWT_REFRESHTOKEN_EXPIRED_TIME_MS}
+
 

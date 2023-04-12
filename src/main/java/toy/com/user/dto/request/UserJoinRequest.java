@@ -7,17 +7,17 @@ import javax.validation.constraints.Size;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
-import toy.com.common.util.PasswordEncrypt;
+import toy.com.user.PasswordEncrypt;
 import toy.com.user.domain.User;
 
 @Builder
 public record UserJoinRequest(
 	@NotBlank(message = "이메일을 입력해 주세요")
-	@Email @Size(min = 8, max = 50) @Pattern(regexp = "^[\\\\w!#$%&'*+/=?`{|}~^-]+(?:\\\\.[\\\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\\\.)+[a-zA-Z]{2,6}$\"")
+	@Email @Size(min = 8, max = 50) @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
 	@Schema(description = "유저 이메일")
 	String email,
 
-	@NotBlank(message = "password를 입력해 주세요")
+	@NotBlank(message = "비밀번호를 입력해주세요")
 	@Size(min = 8, max = 20) @Pattern(regexp = "^[a-zA-Z0-9가-힣]+$")
 	@Schema(description = "유저 password")
 	String password,

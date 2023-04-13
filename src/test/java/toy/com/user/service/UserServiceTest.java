@@ -78,7 +78,7 @@ class UserServiceTest {
 		TokenResponse loginResponse = userService.login(loginRequest.toEntity());
 
 		//then
-		assertThat(redisService.getRefreshToken(loginResponse.refreshToken())).isNotNull();
+		assertThat(redisService.getIdByRefreshToken(loginResponse.refreshToken())).isNotNull();
 		assertThat(loginResponse.accessToken()).isNotNull();
 		assertThat(loginResponse.refreshToken()).isNotNull();
 	}

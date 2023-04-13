@@ -21,7 +21,7 @@ public class RedisService {
 		token.opsForValue().set(refreshToken, id, Duration.ofDays(7));
 	}
 
-	public Optional<Long> getRefreshToken(String refreshToken) {
+	public Optional<Long> getIdByRefreshToken(String refreshToken) {
 		return Optional.ofNullable(token.opsForValue().get(refreshToken));
 	}
 }

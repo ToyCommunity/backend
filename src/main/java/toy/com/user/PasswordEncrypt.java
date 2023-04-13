@@ -1,4 +1,4 @@
-package toy.com.common.util;
+package toy.com.user;
 
 import org.mindrot.jbcrypt.BCrypt;
 

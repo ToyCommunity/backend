@@ -18,7 +18,8 @@ public enum CommonCode {
 	// User-000
 	DUPLICATED_EMAIL("U-001"),
 	WRONG_FORM_INPUT("U-002"),
-	NOT_FOUND_USER("U-003");
+	NOT_FOUND_USER("U-003"),
+	PASSWORD_NOT_MATCH("U-004");
 
 	private final String code;
 }

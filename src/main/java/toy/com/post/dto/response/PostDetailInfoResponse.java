@@ -1,4 +1,4 @@
-package toy.com.post.dto;
+package toy.com.post.dto.response;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -35,7 +35,7 @@ public record PostDetailInfoResponse(@Schema(description = "게시글 id")
 									 @Schema(description = "게시글 생성일자")
 									 LocalDateTime createdAt) {
 
-	public static PostDetailInfoResponse of(Post post) {
+	public static PostDetailInfoResponse ofList(Post post) {
 		return new PostDetailInfoResponseBuilder()
 			.postId(post.getId())
 			.title(post.getPostTitle())
@@ -45,7 +45,6 @@ public record PostDetailInfoResponse(@Schema(description = "게시글 id")
 			.createdAt(post.getCreatedAt())
 			.likeCounts(post.getLikeCounts())
 			.viewCounts(post.getViewCounts())
-			.reply(post.getReplies())
 			.build();
 	}
 
@@ -59,6 +58,7 @@ public record PostDetailInfoResponse(@Schema(description = "게시글 id")
 			.createdAt(post.getCreatedAt())
 			.likeCounts(post.getLikeCounts())
 			.viewCounts(post.getViewCounts())
+			.reply(post.getReplies())
 			.postMyReaction(post.isReactionPost(userId))
 			.build();
 	}

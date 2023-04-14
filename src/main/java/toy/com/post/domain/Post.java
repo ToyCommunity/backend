@@ -3,6 +3,7 @@ package toy.com.post.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -21,10 +22,12 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import toy.com.common.entity.BaseTimeEntity;
 import toy.com.user.domain.User;
 
 @Entity
+@ToString
 @Getter
 @EqualsAndHashCode(of = "id", callSuper = false)
 @Table(name = "post")
@@ -49,16 +52,23 @@ public class Post extends BaseTimeEntity {
 
 	private PostCategory postCategory;
 
-	@JoinColumn(name = "user_id")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "post")
+	private List<Reply> replies = new ArrayList<>();
+
+	@JoinColumn(name = "post_writer_id")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private User postWriter;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "post", orphanRemoval = true)
-	private List<Reply> replies = new ArrayList<>();
-
-	@JoinColumn(name = "reaction_id")
+	@JoinColumn(name = "reaction_user_id")
 	@ManyToOne(fetch = FetchType.LAZY)
-	private User reactonUser;
+	private User reactionUser;
+
+	public void addReplies(Reply reply) {
+		this.replies.add(reply);
+		if (reply.getPost() != this) {
+			reply.applyPost(this);
+			}
+	}
 
 	@Builder
 	public Post(String postTitle,
@@ -67,7 +77,9 @@ public class Post extends BaseTimeEntity {
 		User postWriter,
 		int likeCounts,
 		int viewCounts,
-		PostCategory postCategory) {
+		PostCategory postCategory,
+		Reply reply,
+		User reactionUser) {
 		this.postTitle = postTitle;
 		this.postStatus = postStatus;
 		this.postContent = postContent;
@@ -75,10 +87,12 @@ public class Post extends BaseTimeEntity {
 		this.likeCounts = likeCounts;
 		this.viewCounts = viewCounts;
 		this.postCategory = postCategory;
+		this.reactionUser = reactionUser;
 	}
 
 	public boolean isReactionPost(Long userId) {
-		return reactonUser.getId().equals(userId);
+		if (Objects.isNull(userId)) return false;
+		return reactionUser.getId().equals(userId);
 	}
 
 }

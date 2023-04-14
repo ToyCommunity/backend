@@ -8,8 +8,7 @@ import toy.com.post.domain.Post;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-	Page<Post> findAll(Pageable pageable);
-
+	Page<Post> findAllByOrderByCreatedAtDesc(Pageable pageable);
 	int countBy();
 
 }

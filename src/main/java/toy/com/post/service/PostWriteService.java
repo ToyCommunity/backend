@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 
 import toy.com.post.repository.PostRepository;
 
-@Service
-@Transactional
+//@Service
+//@Transactional
 public class PostWriteService {
 
 	private PostRepository postRepository;

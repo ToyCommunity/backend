@@ -2,8 +2,8 @@ package toy.com.post.domain;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import java.util.Objects;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -17,6 +17,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -24,11 +27,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import toy.com.common.entity.BaseTimeEntity;
+import toy.com.post.dto.request.PostModifyRequest;
 import toy.com.user.domain.User;
 
 @Entity
 @ToString
 @Getter
+@DynamicInsert
+@DynamicUpdate
 @EqualsAndHashCode(of = "id", callSuper = false)
 @Table(name = "post")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -38,13 +44,13 @@ public class Post extends BaseTimeEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private String postTitle;
-
 	@Lob
 	private String postContent;
 
 	@Convert(converter = PostStatusConverter.class)
 	private PostStatus postStatus;
+
+	private String postTitle;
 
 	private int likeCounts;
 
@@ -55,19 +61,18 @@ public class Post extends BaseTimeEntity {
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "post")
 	private List<Reply> replies = new ArrayList<>();
 
-	@JoinColumn(name = "post_writer_id")
-	@ManyToOne(fetch = FetchType.LAZY)
-	private User postWriter;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "reactionPost")
+	private List<PostAdditional> postAdditionalList = new ArrayList<>();
 
-	@JoinColumn(name = "reaction_user_id")
-	@ManyToOne(fetch = FetchType.LAZY)
-	private User reactionUser;
+	@JoinColumn(name = "post_writer_id")
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private User postWriter;
 
 	public void addReplies(Reply reply) {
 		this.replies.add(reply);
 		if (reply.getPost() != this) {
 			reply.applyPost(this);
-			}
+		}
 	}
 
 	@Builder
@@ -77,9 +82,7 @@ public class Post extends BaseTimeEntity {
 		User postWriter,
 		int likeCounts,
 		int viewCounts,
-		PostCategory postCategory,
-		Reply reply,
-		User reactionUser) {
+		PostCategory postCategory) {
 		this.postTitle = postTitle;
 		this.postStatus = postStatus;
 		this.postContent = postContent;
@@ -87,12 +90,31 @@ public class Post extends BaseTimeEntity {
 		this.likeCounts = likeCounts;
 		this.viewCounts = viewCounts;
 		this.postCategory = postCategory;
-		this.reactionUser = reactionUser;
 	}
 
-	public boolean isReactionPost(Long userId) {
-		if (Objects.isNull(userId)) return false;
-		return reactionUser.getId().equals(userId);
+	public boolean isPostHasMyReaction(User reactionUser) {
+		if (Objects.isNull(reactionUser)) {
+			return false;
+		}
+		return postAdditionalList.contains(reactionUser);
 	}
 
+	public void modifyPost(PostModifyRequest postModifyRequest) {
+		this.postTitle = postModifyRequest.title();
+		this.postContent = postModifyRequest.content();
+		this.postCategory = postModifyRequest.category();
+	}
+
+	public void updateViewCount() {
+		this.viewCounts += 1;
+	}
+
+	public void deletePost() {
+		this.postStatus = PostStatus.DELETED;
+	}
+
+	public List<Reply> getReplies(User reactionUser) {
+		this.replies.forEach(reply -> reply.isReplyHasMyReaction(reactionUser));
+		return this.replies;
+	}
 }

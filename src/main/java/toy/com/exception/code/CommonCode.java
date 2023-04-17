@@ -23,7 +23,11 @@ public enum CommonCode {
 
 	// Post-001
 	NOT_FOUND_POST_STATUS("P-001"),
-	NOT_FOUND_POST("P-002");
+	NOT_FOUND_POST("P-002"),
+
+	// Reply-001
+	NOT_FOUND_REPLY_STATUS("P-001"),
+	NOT_FOUND_REPLY("R-002");
 
 	private final String code;
 }

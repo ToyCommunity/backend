@@ -1,23 +1,20 @@
-spring:
+# 데이터 테스트를 위한 H2 db 연결
 
+spring:
   jackson:
     default-property-inclusion: non_null
-
+    property-naming-strategy: SNAKE_CASE
   datasource:
-    hikari:
-      jdbc-url: jdbc:h2:mem:testdb:MODE=MYSQL
-
+    url: jdbc:h2:tcp://localhost/~/toy
+    driver-class-name: org.h2.Driver
+    username: sa
   jpa:
-    properties:
-      hibernate:
-        ddl-auto: update
-        show_sql: true
-        format_sql: true
-        use_sql_comments: true
     show-sql: true
-    open-in-view: false
-
-
-  auth:
-    secret: shinity
-
+    hibernate:
+      ddl-auto: update
+  output:
+    ansi:
+      enabled: always
+logging:
+  level:
+    org.hibernate.type: trace

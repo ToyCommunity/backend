@@ -1,6 +1,11 @@
 package toy.com.post.domain;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -9,7 +14,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -18,10 +27,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import toy.com.common.entity.BaseTimeEntity;
+import toy.com.post.dto.request.ReplyModifyRequest;
 import toy.com.user.domain.User;
 
 @Entity
 @Getter
+@DynamicUpdate
+@DynamicInsert
 @ToString(exclude = "post")
 @EqualsAndHashCode(of = "id", callSuper = false)
 @Table(name = "reply")
@@ -37,6 +49,9 @@ public class Reply extends BaseTimeEntity {
 
 	private int replyLikes;
 
+	@Convert(converter = ReplyStatusConverter.class)
+	private ReplyStatus replyStatus;
+
 	@JoinColumn(name = "post_id")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Post post;
@@ -45,9 +60,8 @@ public class Reply extends BaseTimeEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private User replyWriter;
 
-	@JoinColumn(name = "reply_reaction_user_id")
-	@ManyToOne(fetch = FetchType.LAZY)
-	private User reactionUser;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "reactionReply")
+	private List<ReplyAdditional> replyAdditionalList = new ArrayList<>();
 
 	public void applyPost(Post post) {
 		if (this.post != null) {
@@ -60,16 +74,24 @@ public class Reply extends BaseTimeEntity {
 	}
 
 	@Builder
-	public Reply(String content, int replyLikes, User replyWriter, User reactionUser) {
+	public Reply(String content, int replyLikes, User replyWriter) {
 		this.content = content;
 		this.replyLikes = replyLikes;
 		this.replyWriter = replyWriter;
-		this.reactionUser = reactionUser;
 	}
 
-	public boolean isReactionReply(Long userId) {
-		if (Objects.isNull(userId)) return false;
-		return reactionUser.getId().equals(userId);
+	public boolean isReplyHasMyReaction(User reactionUser) {
+		if (Objects.isNull(reactionUser))
+			return false;
+		return replyAdditionalList.contains(reactionUser);
+	}
+
+	public void modifyReply(ReplyModifyRequest request) {
+		this.content = request.content();
+	}
+
+	public void deleteReply() {
+		this.replyStatus = ReplyStatus.DELETED;
 	}
 
 }

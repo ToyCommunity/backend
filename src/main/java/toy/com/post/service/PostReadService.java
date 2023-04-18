@@ -11,6 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import toy.com.exception.CustomException;
+import toy.com.post.domain.Post;
+import toy.com.post.domain.PostStatus;
+import toy.com.post.dto.ReplyDto;
 import toy.com.post.dto.response.PostDetailInfoResponse;
 import toy.com.post.dto.response.PostListsResponse;
 import toy.com.post.repository.PostRepository;
@@ -42,6 +45,7 @@ public class PostReadService {
 
 	private List<PostDetailInfoResponse> getPostPerPage(Pageable page) {
 		return postRepository.findAllByOrderByCreatedAtDesc(page).stream()
+			.filter(post -> PostStatus.NORMAL == post.getPostStatus())
 			.map(post -> PostDetailInfoResponse.builder()
 				.postId(post.getId())
 				.title(post.getPostTitle())
@@ -67,19 +71,29 @@ public class PostReadService {
 
 		postWriteService.updatePostViewCount(postId);
 
+		Post post = findPostByPostId(postId);
+
+		List<ReplyDto> replies = post.getReplies().stream()
+			.peek(it -> it.isReplyHasMyReaction(searchUser))
+			.map(ReplyDto::entityToDto).toList();
+
+		return PostDetailInfoResponse.builder()
+			.postId(post.getId())
+			.title(post.getPostTitle())
+			.userId(post.getPostWriter().getId())
+			.userName(post.getPostWriter().getNickname())
+			.category(post.getPostCategory().getCode())
+			.createdAt(post.getCreatedAt())
+			.likeCounts(post.getLikeCounts())
+			.viewCounts(post.getViewCounts())
+			.postMyReaction(post.isPostHasMyReaction(searchUser))
+			.replies(replies)
+			.build();
+	}
+
+	public Post findPostByPostId(Long postId) {
+
 		return postRepository.findById(postId)
-			.map(post -> PostDetailInfoResponse.builder()
-				.postId(post.getId())
-				.title(post.getPostTitle())
-				.userId(post.getPostWriter().getId())
-				.userName(post.getPostWriter().getNickname())
-				.category(post.getPostCategory().getCode())
-				.createdAt(post.getCreatedAt())
-				.likeCounts(post.getLikeCounts())
-				.viewCounts(post.getViewCounts())
-				.reply(post.getReplies(searchUser))
-				.postMyReaction(post.isPostHasMyReaction(searchUser))
-				.build())
 			.orElseThrow(() -> new CustomException(NOT_FOUND_POST));
 	}
 

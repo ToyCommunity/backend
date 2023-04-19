@@ -86,6 +86,7 @@ public class PostWriteService {
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void updatePostViewCount(Long postId) {
+
 		Post updatePost = findPostByPostId(postId);
 		updatePost.updateViewCount();
 	}

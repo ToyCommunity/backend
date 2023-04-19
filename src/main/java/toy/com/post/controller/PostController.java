@@ -2,13 +2,16 @@ package toy.com.post.controller;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,19 +36,20 @@ public class PostController {
 	private final PostWriteService postWriteService;
 
 	@Operation(summary = "게시글 작성", description = "게시글 작성을 요청한다")
-	@PostMapping(value = "/write", produces = "application/json")
+	@ResponseStatus(HttpStatus.CREATED)
+	@PostMapping(value = "/write")
 	public void createPost(@RequestBody PostCreateRequest postCreateRequest) {
 		postWriteService.createPost(postCreateRequest);
 	}
 
 	@Operation(summary = "게시글 수정", description = "게시글 수정을 요청한다")
-	@PatchMapping(value = "/modify", produces = "application/json")
+	@PatchMapping(value = "/modify")
 	public void modifyPost(@RequestBody PostModifyRequest postModifyRequest) {
 		postWriteService.modifyPost(postModifyRequest);
 	}
 
 	@Operation(summary = "게시글 삭제", description = "게시글 삭제를 요청한다")
-	@DeleteMapping(value = "/delete/{postId}", produces = "application/json")
+	@DeleteMapping(value = "/delete/{postId}")
 	public void modifyPost(@PathVariable Long postId) {
 		postWriteService.deletePost(postId);
 	}
@@ -63,7 +67,7 @@ public class PostController {
 	}
 
 	@Operation(summary = "게시글 좋아요", description = "게시글 좋아요를 한다")
-	@PostMapping(value = "/like/{postId}", produces = "application/json")
+	@PutMapping(value = "/like/{postId}")
 	public void likePost(@PathVariable Long postId) {
 		postWriteService.updateLikePost(postId);
 	}

@@ -33,10 +33,10 @@ import toy.com.post.dto.request.PostModifyRequest;
 import toy.com.user.domain.User;
 
 @Entity
-@ToString
 @Getter
 @DynamicInsert
 @DynamicUpdate
+@ToString(exclude = {"replies", "postAdditionalList", "postWriter"})
 @EqualsAndHashCode(of = "id", callSuper = false)
 @Table(name = "post")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

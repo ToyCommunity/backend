@@ -1,7 +1,7 @@
 aws:
   secretsmanager:
-    name: jwt
-    prefix: /secret
+    name: shinity
+    prefix: /secrets
 
 cloud:
   aws:

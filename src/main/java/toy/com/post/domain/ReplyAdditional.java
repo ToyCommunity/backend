@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -21,7 +23,7 @@ import toy.com.user.domain.User;
 
 @Entity
 @Getter
-@ToString
+@ToString(exclude = {"reactionLikeReplyUser", "reactionReply"})
 @EqualsAndHashCode(of = "id", callSuper = false)
 @Table(name = "reply_additional")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -31,10 +33,12 @@ public class ReplyAdditional extends BaseTimeEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@JsonBackReference
 	@JoinColumn(name = "user_id")
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private User likeUser;
 
+	@JsonBackReference
 	@JoinColumn(name = "reply_id")
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Reply reactionReply;

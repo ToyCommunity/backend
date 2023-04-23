@@ -2,9 +2,8 @@ package toy.com.post.service;
 
 import static toy.com.exception.code.ErrorCode.*;
 
-import javax.transaction.Transactional;
-
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import toy.com.exception.CustomException;
@@ -24,6 +23,12 @@ public class PostCommandService {
 
 	private final PostRepository postRepository;
 	private final PostAdditionalRepository postAdditionalRepository;
+
+	public Post findPostByPostId(Long postId) {
+
+		return postRepository.findById(postId)
+			.orElseThrow(() -> new CustomException(NOT_FOUND_POST));
+	}
 
 	public void createPost(PostCreateRequest request) {
 
@@ -68,19 +73,18 @@ public class PostCommandService {
 			.build();
 
 		Post likePost = findPostByPostId(postId);
+		likePost.updatePostLikeCount();
+
+		postRepository.save(likePost);
+
 		postAdditionalRepository.save(PostAdditional.builder()
 			.reactionPost(likePost)
 			.reactionPostUser(sampleUser)
 			.build());
 	}
 
-	public Post findPostByPostId(Long postId) {
-
-		return postRepository.findById(postId)
-			.orElseThrow(() -> new CustomException(NOT_FOUND_POST));
-	}
-
 	public void updatePostViewCount(Long postId) {
+
 		Post updatePost = findPostByPostId(postId);
 		updatePost.updateViewCount();
 	}

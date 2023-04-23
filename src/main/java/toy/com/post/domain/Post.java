@@ -20,6 +20,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -31,10 +33,10 @@ import toy.com.post.dto.request.PostModifyRequest;
 import toy.com.user.domain.User;
 
 @Entity
-@ToString
 @Getter
 @DynamicInsert
 @DynamicUpdate
+@ToString(exclude = {"replies", "postAdditionalList", "postWriter"})
 @EqualsAndHashCode(of = "id", callSuper = false)
 @Table(name = "post")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -58,6 +60,7 @@ public class Post extends BaseTimeEntity {
 
 	private PostCategory postCategory;
 
+	@JsonManagedReference
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "post")
 	private List<Reply> replies = new ArrayList<>();
 
@@ -109,12 +112,11 @@ public class Post extends BaseTimeEntity {
 		this.viewCounts += 1;
 	}
 
-	public void deletePost() {
-		this.postStatus = PostStatus.DELETED;
+	public void updatePostLikeCount() {
+		this.likeCounts += 1;
 	}
 
-	public List<Reply> getReplies(User reactionUser) {
-		this.replies.forEach(reply -> reply.isReplyHasMyReaction(reactionUser));
-		return this.replies;
+	public void deletePost() {
+		this.postStatus = PostStatus.DELETED;
 	}
 }

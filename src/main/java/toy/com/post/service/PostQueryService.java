@@ -19,7 +19,7 @@ import toy.com.user.domain.User;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class PostReadService {
+public class PostQueryService {
 
 	private static final int DEFAULT_PAGE_COUNT = 20;
 

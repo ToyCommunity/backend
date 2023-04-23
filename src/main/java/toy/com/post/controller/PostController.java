@@ -18,8 +18,8 @@ import toy.com.post.dto.request.PostCreateRequest;
 import toy.com.post.dto.request.PostModifyRequest;
 import toy.com.post.dto.response.PostDetailInfoResponse;
 import toy.com.post.dto.response.PostListsResponse;
-import toy.com.post.service.PostReadService;
 import toy.com.post.service.PostWriteService;
+import toy.com.post.service.PostQueryService;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,7 +29,7 @@ public class PostController {
 
 	private static final int DEFAULT_PAGE_COUNT = 20;
 
-	private final PostReadService postReadService;
+	private final PostQueryService postQueryService;
 	private final PostWriteService postWriteService;
 
 	@Operation(summary = "게시글 작성", description = "게시글 작성을 요청한다")
@@ -59,7 +59,7 @@ public class PostController {
 	@Operation(summary = "게시글 상세 조회", description = "게시글 상세 내용을 요청한다")
 	@GetMapping(value = "/detail/{postId}", produces = "application/json")
 	public PostDetailInfoResponse getPostDetail(@PathVariable Long postId) {
-		return postReadService.getPostDetail(postId);
+		return postQueryService.getPostDetail(postId);
 	}
 
 	@Operation(summary = "게시글 좋아요", description = "게시글 좋아요를 한다")

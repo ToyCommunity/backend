@@ -24,8 +24,9 @@ logging:
   level:
     org.hibernate.type: trace
 
+# 임시 주석 처리 추후 불필요시 제거
+#jwt:
+#  secret-key: ${JWT_SECRET_KEY}
+#  access-token-expired-time: ${JWT_ACCESSTOKEN_EXPIRED_TIME_MS}
+#  refresh-token-expired-time: ${JWT_REFRESHTOKEN_EXPIRED_TIME_MS}
 
-jwt:
-  secret-key: ${JWT_SECRET_KEY}
-  access-token-expired-time: ${JWT_ACCESSTOKEN_EXPIRED_TIME_MS}
-  refresh-token-expired-time: ${JWT_REFRESHTOKEN_EXPIRED_TIME_MS}

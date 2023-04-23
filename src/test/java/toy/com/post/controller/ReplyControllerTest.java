@@ -23,8 +23,8 @@ import toy.com.post.dto.request.ReplyCreateRequest;
 import toy.com.post.dto.request.ReplyModifyRequest;
 import toy.com.post.repository.PostRepository;
 import toy.com.post.repository.ReplyRepository;
-import toy.com.post.service.PostWriteService;
-import toy.com.post.service.ReplyWriteService;
+import toy.com.post.service.PostCommandService;
+import toy.com.post.service.ReplyCommandService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -37,10 +37,10 @@ class ReplyControllerTest {
 	private ObjectMapper objectMapper;
 
 	@Autowired
-	private ReplyWriteService replyWriteService;
+	private ReplyCommandService replyCommandService;
 
 	@Autowired
-	private PostWriteService postWriteService;
+	private PostCommandService postCommandService;
 
 	@Autowired
 	private PostRepository postRepository;
@@ -64,7 +64,7 @@ class ReplyControllerTest {
 			.category(PostCategory.DEFAULT)
 			.build();
 
-		postWriteService.createPost(request);
+		postCommandService.createPost(request);
 
 		Post post = postRepository.findAll().get(0);
 
@@ -90,7 +90,7 @@ class ReplyControllerTest {
 			.category(PostCategory.DEFAULT)
 			.build();
 
-		postWriteService.createPost(request);
+		postCommandService.createPost(request);
 
 		Post post = postRepository.findAll().get(0);
 
@@ -99,7 +99,7 @@ class ReplyControllerTest {
 			.content("테스트")
 			.build();
 
-		replyWriteService.createReply(replyCreateRequest);
+		replyCommandService.createReply(replyCreateRequest);
 
 		Reply reply = replyRepository.findAll().get(0);
 
@@ -125,7 +125,7 @@ class ReplyControllerTest {
 			.category(PostCategory.DEFAULT)
 			.build();
 
-		postWriteService.createPost(request);
+		postCommandService.createPost(request);
 
 		Post post = postRepository.findAll().get(0);
 
@@ -134,7 +134,7 @@ class ReplyControllerTest {
 			.content("테스트")
 			.build();
 
-		replyWriteService.createReply(replyCreateRequest);
+		replyCommandService.createReply(replyCreateRequest);
 
 		Reply reply = replyRepository.findAll().get(0);
 
@@ -153,7 +153,7 @@ class ReplyControllerTest {
 			.category(PostCategory.DEFAULT)
 			.build();
 
-		postWriteService.createPost(request);
+		postCommandService.createPost(request);
 
 		Post post = postRepository.findAll().get(0);
 
@@ -162,7 +162,7 @@ class ReplyControllerTest {
 			.content("테스트")
 			.build();
 
-		replyWriteService.createReply(replyCreateRequest);
+		replyCommandService.createReply(replyCreateRequest);
 
 		Reply reply = replyRepository.findAll().get(0);
 

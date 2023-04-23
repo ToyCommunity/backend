@@ -36,7 +36,7 @@ public class PostAdditional extends BaseTimeEntity {
 
 	@JoinColumn(name = "user_id")
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private User reactionLikePostUser;
+	private User likeUser;
 
 	@JoinColumn(name = "post_id")
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -45,6 +45,6 @@ public class PostAdditional extends BaseTimeEntity {
 	@Builder
 	public PostAdditional(User reactionPostUser, Post reactionPost) {
 		this.reactionPost = reactionPost;
-		this.reactionLikePostUser = reactionPostUser;
+		this.likeUser = reactionPostUser;
 	}
 }

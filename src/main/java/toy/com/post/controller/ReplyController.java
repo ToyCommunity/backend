@@ -14,7 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import toy.com.post.dto.request.ReplyCreateRequest;
 import toy.com.post.dto.request.ReplyModifyRequest;
-import toy.com.post.service.ReplyWriteService;
+import toy.com.post.service.ReplyCommandService;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,29 +22,29 @@ import toy.com.post.service.ReplyWriteService;
 @Tag(name = "reply-controller", description = "댓글 관련 API")
 public class ReplyController {
 
-	private final ReplyWriteService replyWriteService;
+	private final ReplyCommandService replyCommandService;
 
 	@Operation(summary = "댓글 작성", description = "댓글을 작성한다")
-	@PostMapping(value = "/write", produces = "application/json")
+	@PostMapping
 	public void createReply(@RequestBody ReplyCreateRequest request) {
-		replyWriteService.createReply(request);
+		replyCommandService.createReply(request);
 	}
 
 	@Operation(summary = "댓글 수정", description = "댓글을 수정한다")
-	@PatchMapping(value = "/modify", produces = "application/json")
+	@PatchMapping
 	public void modifyReply(@RequestBody ReplyModifyRequest request) {
-		replyWriteService.modifyReply(request);
+		replyCommandService.modifyReply(request);
 	}
 
 	@Operation(summary = "댓글 삭제", description = "댓글을 삭제한다")
-	@DeleteMapping(value = "/delete/{replyId}", produces = "application/json")
+	@DeleteMapping("/{replyId}")
 	public void deleteReply(@PathVariable Long replyId) {
-		replyWriteService.deleteReply(replyId);
+		replyCommandService.deleteReply(replyId);
 	}
 
 	@Operation(summary = "댓글 좋아요", description = "댓글 좋아요를 한다")
-	@PutMapping(value = "/like/{replyId}", produces = "application/json")
+	@PutMapping("/like/{replyId}")
 	public void likeReply(@PathVariable Long replyId) {
-		replyWriteService.likeReply(replyId);
+		replyCommandService.likeReply(replyId);
 	}
 }

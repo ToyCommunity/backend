@@ -18,54 +18,54 @@ import toy.com.post.dto.request.PostCreateRequest;
 import toy.com.post.dto.request.PostModifyRequest;
 import toy.com.post.dto.response.PostDetailInfoResponse;
 import toy.com.post.dto.response.PostListsResponse;
-import toy.com.post.service.PostReadService;
-import toy.com.post.service.PostWriteService;
+import toy.com.post.service.PostCommandService;
+import toy.com.post.service.PostQueryService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/post")
+@RequestMapping("/api/posts")
 @Tag(name = "post-controller", description = "게시글 관련 API")
 public class PostController {
 
 	private static final int DEFAULT_PAGE_COUNT = 20;
 
-	private final PostReadService postReadService;
-	private final PostWriteService postWriteService;
+	private final PostQueryService postQueryService;
+	private final PostCommandService postCommandService;
 
 	@Operation(summary = "게시글 작성", description = "게시글 작성을 요청한다")
-	@PostMapping(value = "/write", produces = "application/json")
+	@PostMapping
 	public void createPost(@RequestBody PostCreateRequest postCreateRequest) {
-		postWriteService.createPost(postCreateRequest);
+		postCommandService.createPost(postCreateRequest);
 	}
 
 	@Operation(summary = "게시글 수정", description = "게시글 수정을 요청한다")
-	@PatchMapping(value = "/modify", produces = "application/json")
+	@PatchMapping
 	public void modifyPost(@RequestBody PostModifyRequest postModifyRequest) {
-		postWriteService.modifyPost(postModifyRequest);
+		postCommandService.modifyPost(postModifyRequest);
 	}
 
 	@Operation(summary = "게시글 삭제", description = "게시글 삭제를 요청한다")
-	@DeleteMapping(value = "/delete/{postId}", produces = "application/json")
+	@DeleteMapping("/{postId}")
 	public void modifyPost(@PathVariable Long postId) {
-		postWriteService.deletePost(postId);
+		postCommandService.deletePost(postId);
 	}
 
 	@Operation(summary = "게시글 리스트 조회", description = "게시글 리스트를 요청한다")
 	@GetMapping(value = "/list", produces = "application/json")
 	public PostListsResponse getPostList(@PageableDefault(size = DEFAULT_PAGE_COUNT) Pageable page) {
-		return postReadService.getPostListPerPage(page);
+		return postQueryService.getPostListPerPage(page);
 	}
 
 	@Operation(summary = "게시글 상세 조회", description = "게시글 상세 내용을 요청한다")
 	@GetMapping(value = "/detail/{postId}", produces = "application/json")
 	public PostDetailInfoResponse getPostDetail(@PathVariable Long postId) {
-		return postReadService.getPostDetail(postId);
+		return postQueryService.getPostDetail(postId);
 	}
 
 	@Operation(summary = "게시글 좋아요", description = "게시글 좋아요를 한다")
 	@PostMapping(value = "/like/{postId}", produces = "application/json")
 	public void likePost(@PathVariable Long postId) {
-		postWriteService.updateLikePost(postId);
+		postCommandService.updateLikePost(postId);
 	}
 
 }

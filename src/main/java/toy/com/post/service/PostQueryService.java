@@ -22,13 +22,13 @@ import toy.com.user.domain.User;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class PostReadService {
+public class PostQueryService {
 
 	private static final int DEFAULT_PAGE_COUNT = 20;
 
 	private final PostRepository postRepository;
 	// TODO(박종빈) 순환참조 주의
-	private final PostWriteService postWriteService;
+	private final PostCommandService postCommandService;
 
 	public PostListsResponse getPostListPerPage(Pageable page) {
 
@@ -69,7 +69,7 @@ public class PostReadService {
 			.nickname("댓글유저222")
 			.build();
 
-		postWriteService.updatePostViewCount(postId);
+		postCommandService.updatePostViewCount(postId);
 
 		Post post = findPostByPostId(postId);
 

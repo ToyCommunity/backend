@@ -51,11 +51,11 @@ public class User {
 	@Enumerated(EnumType.STRING)
 	private UserStatus userStatus;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "reactionLikePostUser")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "likeUser")
 	private List<PostAdditional> postAdditionalList = new ArrayList<>();
 
 	@JsonManagedReference
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "reactionLikeReplyUser")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "likeUser")
 	private List<ReplyAdditional> replyAdditionalList = new ArrayList<>();
 
 	@Builder

@@ -6,10 +6,17 @@ spring:
     serialization:
       fail-on-empty-beans: false
   datasource:
-    url: jdbc:h2:tcp://localhost/~/toy
-    driver-class-name: org.h2.Driver
-    username: sa
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/shinity?autoReconnect=true
+    username: ${db.username}
+    password: ${db.password}
+  #  datasource:
+  #    url: jdbc:h2:tcp://localhost/~/toy
+  #    driver-class-name: org.h2.Driver
+  #    username: sa
   jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     show-sql: true
     hibernate:
       ddl-auto: update

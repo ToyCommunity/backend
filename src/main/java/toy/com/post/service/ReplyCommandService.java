@@ -20,9 +20,9 @@ import toy.com.user.domain.User;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ReplyWriteService {
+public class ReplyCommandService {
 
-	private final PostReadService postReadService;
+	private final PostQueryService postQueryService;
 	private final ReplyRepository replyRepository;
 	private final ReplyAdditionalRepository replyAdditionalRepository;
 
@@ -36,7 +36,7 @@ public class ReplyWriteService {
 			.nickname("댓글유저222")
 			.build();
 
-		Post post = postReadService.findPostByPostId(request.postId());
+		Post post = postQueryService.findPostByPostId(request.postId());
 
 		replyRepository.save(Reply.builder()
 			.replyWriter(sampleUser)
@@ -77,7 +77,7 @@ public class ReplyWriteService {
 
 		replyAdditionalRepository.save(ReplyAdditional.builder()
 			.reactionReply(reply)
-			.reactionLikeReplyUser(reactionReplyUser)
+			.likeUser(reactionReplyUser)
 			.build());
 	}
 

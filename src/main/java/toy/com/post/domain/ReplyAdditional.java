@@ -36,7 +36,7 @@ public class ReplyAdditional extends BaseTimeEntity {
 	@JsonBackReference
 	@JoinColumn(name = "user_id")
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private User reactionLikeReplyUser;
+	private User likeUser;
 
 	@JsonBackReference
 	@JoinColumn(name = "reply_id")
@@ -44,9 +44,9 @@ public class ReplyAdditional extends BaseTimeEntity {
 	private Reply reactionReply;
 
 	@Builder
-	public ReplyAdditional(User reactionLikeReplyUser, Reply reactionReply) {
+	public ReplyAdditional(User likeUser, Reply reactionReply) {
 		this.reactionReply = reactionReply;
-		this.reactionLikeReplyUser = reactionLikeReplyUser;
+		this.likeUser = likeUser;
 	}
 
 }

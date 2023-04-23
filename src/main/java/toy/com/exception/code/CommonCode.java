@@ -21,8 +21,9 @@ public enum CommonCode {
 	NOT_FOUND_USER("U-003"),
 	PASSWORD_NOT_MATCH("U-004"),
 
-	// Post-100
-	NOT_FOUND_POST_STATUS("P-101");
+	// Post-001
+	NOT_FOUND_POST_STATUS("P-001"),
+	NOT_FOUND_POST("P-002");
 
 	private final String code;
 }

@@ -23,7 +23,7 @@ import toy.com.post.service.PostWriteService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/post")
+@RequestMapping("/api/posts")
 @Tag(name = "post-controller", description = "게시글 관련 API")
 public class PostController {
 
@@ -33,19 +33,19 @@ public class PostController {
 	private final PostWriteService postWriteService;
 
 	@Operation(summary = "게시글 작성", description = "게시글 작성을 요청한다")
-	@PostMapping(value = "/write", produces = "application/json")
+	@PostMapping
 	public void createPost(@RequestBody PostCreateRequest postCreateRequest) {
 		postWriteService.createPost(postCreateRequest);
 	}
 
 	@Operation(summary = "게시글 수정", description = "게시글 수정을 요청한다")
-	@PatchMapping(value = "/modify", produces = "application/json")
+	@PatchMapping
 	public void modifyPost(@RequestBody PostModifyRequest postModifyRequest) {
 		postWriteService.modifyPost(postModifyRequest);
 	}
 
 	@Operation(summary = "게시글 삭제", description = "게시글 삭제를 요청한다")
-	@DeleteMapping(value = "/delete/{postId}", produces = "application/json")
+	@DeleteMapping("/{postId}")
 	public void modifyPost(@PathVariable Long postId) {
 		postWriteService.deletePost(postId);
 	}

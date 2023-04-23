@@ -20,7 +20,7 @@ import toy.com.user.domain.User;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class PostWriteService {
+public class PostCommandService {
 
 	private final PostRepository postRepository;
 	private final PostAdditionalRepository postAdditionalRepository;

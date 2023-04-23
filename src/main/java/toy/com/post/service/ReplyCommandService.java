@@ -18,7 +18,7 @@ import toy.com.user.domain.User;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ReplyWriteService {
+public class ReplyCommandService {
 
 	private final ReplyRepository replyRepository;
 	private final ReplyAdditionalRepository replyAdditionalRepository;
@@ -67,7 +67,7 @@ public class ReplyWriteService {
 
 		replyAdditionalRepository.save(ReplyAdditional.builder()
 			.reactionReply(reply)
-			.reactionLikeReplyUser(reactionReplyUser)
+			.likeUser(reactionReplyUser)
 			.build());
 	}
 

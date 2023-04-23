@@ -4,7 +4,6 @@ import java.util.List;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
-import toy.com.post.dto.PostDetailInfoResponse;
 
 @Builder
 public record PostListsResponse(@Schema(description = "현재 요청된 페이지")

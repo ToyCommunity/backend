@@ -46,6 +46,9 @@ dependencies {
     // Bcrypt 암호화
     implementation group: 'org.mindrot', name: 'jbcrypt', version: '0.4'
 
+    // 내장 redis
+    implementation 'it.ozimov:embedded-redis:0.7.2'
+
     // swagger open Api
     implementation 'org.springdoc:springdoc-openapi-ui:1.5.7'
 
@@ -56,10 +59,6 @@ dependencies {
 
     // open Api class path 설정을 위한 의존성 추가
     implementation group: 'io.github.classgraph', name: 'classgraph', version: '4.8.126'
-
-    //Slf4j
-    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
-
 }
 
 tasks.named('test') {

@@ -1,10 +1,14 @@
 # 데이터 테스트를 위한 H2 db 연결
 
 spring:
+  profiles:
+    default: local
   jackson:
     default-property-inclusion: non_null
+    property-naming-strategy: SNAKE_CASE
     serialization:
       fail-on-empty-beans: false
+
   datasource:
     url: jdbc:h2:tcp://localhost/~/toy
     driver-class-name: org.h2.Driver

@@ -25,8 +25,8 @@ import toy.com.post.dto.request.PostCreateRequest;
 import toy.com.post.dto.request.PostModifyRequest;
 import toy.com.post.dto.response.PostDetailInfoResponse;
 import toy.com.post.repository.PostRepository;
-import toy.com.post.service.PostReadService;
-import toy.com.post.service.PostWriteService;
+import toy.com.post.service.PostCommandService;
+import toy.com.post.service.PostQueryService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -39,10 +39,10 @@ class PostControllerTest {
 	private ObjectMapper objectMapper;
 
 	@Autowired
-	private PostReadService postReadService;
+	private PostQueryService postQueryService;
 
 	@Autowired
-	private PostWriteService postWriteService;
+	private PostCommandService postCommandService;
 
 	@Autowired
 	private PostRepository postRepository;
@@ -52,7 +52,7 @@ class PostControllerTest {
 
 		postRepository.deleteAll();
 
-		this.mockMvc = MockMvcBuilders.standaloneSetup(new PostController(postReadService, postWriteService))
+		this.mockMvc = MockMvcBuilders.standaloneSetup(new PostController(postQueryService, postCommandService))
 			.setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
 			.build();
 	}
@@ -131,7 +131,7 @@ class PostControllerTest {
 			.category(PostCategory.DEFAULT)
 			.build();
 
-		postWriteService.createPost(request);
+		postCommandService.createPost(request);
 
 		mockMvc.perform(get("/api/post/list")
 				.contentType("application/x-www-form-urlencoded")
@@ -150,11 +150,11 @@ class PostControllerTest {
 			.category(PostCategory.DEFAULT)
 			.build();
 
-		postWriteService.createPost(request);
+		postCommandService.createPost(request);
 
 		Post post = postRepository.findAll().get(0);
 
-		PostDetailInfoResponse res = postReadService.getPostDetail(post.getId());
+		PostDetailInfoResponse res = postQueryService.getPostDetail(post.getId());
 
 		mockMvc.perform(get("/api/post/detail/{postId}", post.getId())
 				.contentType(APPLICATION_JSON))
@@ -180,7 +180,7 @@ class PostControllerTest {
 			.category(PostCategory.DEFAULT)
 			.build();
 
-		postWriteService.createPost(request);
+		postCommandService.createPost(request);
 
 		Post post = postRepository.findAll().get(0);
 

@@ -19,7 +19,10 @@ public enum CommonCode {
 	DUPLICATED_EMAIL("U-001"),
 	WRONG_FORM_INPUT("U-002"),
 	NOT_FOUND_USER("U-003"),
-	PASSWORD_NOT_MATCH("U-004");
+	PASSWORD_NOT_MATCH("U-004"),
+
+	// Post-100
+	NOT_FOUND_POST_STATUS("P-101");
 
 	private final String code;
 }

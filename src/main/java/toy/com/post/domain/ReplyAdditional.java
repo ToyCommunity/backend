@@ -33,16 +33,16 @@ public class ReplyAdditional extends BaseTimeEntity {
 
 	@JoinColumn(name = "user_id")
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private User reactionLikeReplyUser;
+	private User likeUser;
 
 	@JoinColumn(name = "reply_id")
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Reply reactionReply;
 
 	@Builder
-	public ReplyAdditional(User reactionLikeReplyUser, Reply reactionReply) {
+	public ReplyAdditional(User likeUser, Reply reactionReply) {
 		this.reactionReply = reactionReply;
-		this.reactionLikeReplyUser = reactionLikeReplyUser;
+		this.likeUser = likeUser;
 	}
 
 }

@@ -8,7 +8,7 @@ import toy.com.post.repository.PostRepository;
 
 @Service
 @Transactional
-public class PostWriteService {
+public class PostCommandService {
 
 	private PostRepository postRepository;
 

@@ -22,7 +22,7 @@ import toy.com.user.domain.User;
 @RequiredArgsConstructor
 public class ReplyCommandService {
 
-	private final PostReadService postReadService;
+	private final PostQueryService postQueryService;
 	private final ReplyRepository replyRepository;
 	private final ReplyAdditionalRepository replyAdditionalRepository;
 
@@ -36,7 +36,7 @@ public class ReplyCommandService {
 			.nickname("댓글유저222")
 			.build();
 
-		Post post = postReadService.findPostByPostId(request.postId());
+		Post post = postQueryService.findPostByPostId(request.postId());
 
 		replyRepository.save(Reply.builder()
 			.replyWriter(sampleUser)

@@ -3,7 +3,6 @@ package toy.com.post.service;
 import static toy.com.exception.code.ErrorCode.*;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
@@ -84,7 +83,6 @@ public class PostCommandService {
 			.build());
 	}
 
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void updatePostViewCount(Long postId) {
 		Post updatePost = findPostByPostId(postId);
 		updatePost.updateViewCount();

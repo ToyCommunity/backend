@@ -59,6 +59,7 @@ public class PostController {
 	@Operation(summary = "게시글 상세 조회", description = "게시글 상세 내용을 요청한다")
 	@GetMapping(value = "/detail/{postId}", produces = "application/json")
 	public PostDetailInfoResponse getPostDetail(@PathVariable Long postId) {
+		postCommandService.updatePostViewCount(postId);
 		return postQueryService.getPostDetail(postId);
 	}
 

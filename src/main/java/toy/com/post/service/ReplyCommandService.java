@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import toy.com.exception.CustomException;
 import toy.com.exception.code.ErrorCode;
+import toy.com.post.domain.Post;
 import toy.com.post.domain.Reply;
 import toy.com.post.domain.ReplyAdditional;
+import toy.com.post.domain.ReplyStatus;
 import toy.com.post.dto.request.ReplyCreateRequest;
 import toy.com.post.dto.request.ReplyModifyRequest;
 import toy.com.post.repository.ReplyAdditionalRepository;
@@ -20,6 +22,7 @@ import toy.com.user.domain.User;
 @RequiredArgsConstructor
 public class ReplyCommandService {
 
+	private final PostQueryService postQueryService;
 	private final ReplyRepository replyRepository;
 	private final ReplyAdditionalRepository replyAdditionalRepository;
 
@@ -33,8 +36,12 @@ public class ReplyCommandService {
 			.nickname("댓글유저222")
 			.build();
 
+		Post post = postQueryService.findPostByPostId(request.postId());
+
 		replyRepository.save(Reply.builder()
 			.replyWriter(sampleUser)
+			.post(post)
+			.replyStatus(ReplyStatus.NORMAL)
 			.content(request.content())
 			.build());
 	}
@@ -64,6 +71,9 @@ public class ReplyCommandService {
 			.build();
 
 		Reply reply = findReplyByReplyId(replyId);
+
+		reply.updateReplyLike();
+		replyRepository.save(reply);
 
 		replyAdditionalRepository.save(ReplyAdditional.builder()
 			.reactionReply(reply)

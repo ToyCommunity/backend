@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
-import toy.com.post.domain.Reply;
+import toy.com.post.dto.ReplyDto;
 
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -30,7 +30,7 @@ public record PostDetailInfoResponse(@Schema(description = "게시글 id")
 									 @Schema(description = "현재 접속 유저가 해당 게시글 좋아요 선택 여부")
 									 boolean postMyReaction,
 									 @Schema(description = "현재 게시글의 답글")
-									 List<Reply> reply,
+									 List<ReplyDto> replies,
 									 @Schema(description = "게시글 생성일자")
 									 LocalDateTime createdAt) {
 }

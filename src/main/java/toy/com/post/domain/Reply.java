@@ -20,6 +20,9 @@ import javax.persistence.Table;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -52,14 +55,16 @@ public class Reply extends BaseTimeEntity {
 	@Convert(converter = ReplyStatusConverter.class)
 	private ReplyStatus replyStatus;
 
+	@JsonBackReference
 	@JoinColumn(name = "post_id")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Post post;
 
 	@JoinColumn(name = "reply_write_user_id")
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private User replyWriter;
 
+	@JsonManagedReference
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "reactionReply")
 	private List<ReplyAdditional> replyAdditionalList = new ArrayList<>();
 
@@ -74,10 +79,12 @@ public class Reply extends BaseTimeEntity {
 	}
 
 	@Builder
-	public Reply(String content, int replyLikes, User replyWriter) {
+	public Reply(String content, int replyLikes, User replyWriter, ReplyStatus replyStatus, Post post) {
 		this.content = content;
+		this.replyStatus = replyStatus;
 		this.replyLikes = replyLikes;
 		this.replyWriter = replyWriter;
+		this.post = post;
 	}
 
 	public boolean isReplyHasMyReaction(User reactionUser) {
@@ -92,6 +99,10 @@ public class Reply extends BaseTimeEntity {
 
 	public void deleteReply() {
 		this.replyStatus = ReplyStatus.DELETED;
+	}
+
+	public void updateReplyLike() {
+		this.replyLikes += 1;
 	}
 
 }

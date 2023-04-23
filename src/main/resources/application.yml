@@ -3,7 +3,6 @@
 spring:
   jackson:
     default-property-inclusion: non_null
-    property-naming-strategy: SNAKE_CASE
     serialization:
       fail-on-empty-beans: false
   datasource:

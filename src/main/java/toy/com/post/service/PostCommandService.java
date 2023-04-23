@@ -84,6 +84,7 @@ public class PostCommandService {
 	}
 
 	public void updatePostViewCount(Long postId) {
+
 		Post updatePost = findPostByPostId(postId);
 		updatePost.updateViewCount();
 	}

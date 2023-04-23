@@ -37,7 +37,7 @@ import toy.com.user.domain.User;
 @Getter
 @DynamicUpdate
 @DynamicInsert
-@ToString(exclude = "post")
+@ToString(exclude = {"post", "replyWriter", "replyAdditionalList"})
 @EqualsAndHashCode(of = "id", callSuper = false)
 @Table(name = "reply")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

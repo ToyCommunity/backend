@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
-import toy.com.post.domain.Post;
 import toy.com.post.domain.Reply;
 
 @Builder
@@ -34,32 +33,4 @@ public record PostDetailInfoResponse(@Schema(description = "게시글 id")
 									 List<Reply> reply,
 									 @Schema(description = "게시글 생성일자")
 									 LocalDateTime createdAt) {
-
-	public static PostDetailInfoResponse ofList(Post post) {
-		return new PostDetailInfoResponseBuilder()
-			.postId(post.getId())
-			.title(post.getPostTitle())
-			.userId(post.getPostWriter().getId())
-			.userName(post.getPostWriter().getNickname())
-			.category(post.getPostCategory().getCode())
-			.createdAt(post.getCreatedAt())
-			.likeCounts(post.getLikeCounts())
-			.viewCounts(post.getViewCounts())
-			.build();
-	}
-
-	public static PostDetailInfoResponse ofDetail(Post post, Long userId) {
-		return new PostDetailInfoResponseBuilder()
-			.postId(post.getId())
-			.title(post.getPostTitle())
-			.userId(post.getPostWriter().getId())
-			.userName(post.getPostWriter().getNickname())
-			.category(post.getPostCategory().getCode())
-			.createdAt(post.getCreatedAt())
-			.likeCounts(post.getLikeCounts())
-			.viewCounts(post.getViewCounts())
-			.reply(post.getReplies())
-			.postMyReaction(post.isReactionPost(userId))
-			.build();
-	}
 }

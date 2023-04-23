@@ -1,25 +1,30 @@
+# 데이터 테스트를 위한 H2 db 연결
+
 spring:
+  jackson:
+    default-property-inclusion: non_null
+    property-naming-strategy: SNAKE_CASE
   datasource:
-    hikari:
-      jdbc-url: jdbc:h2:mem:testdb:MODE=MYSQL
-
+    url: jdbc:h2:tcp://localhost/~/toy
+    driver-class-name: org.h2.Driver
+    username: sa
   jpa:
-    properties:
-      hibernate:
-        ddl-auto: update
-        show_sql: true
-        format_sql: true
-        use_sql_comments: true
     show-sql: true
-    open-in-view: false
-
+    hibernate:
+      ddl-auto: update
+  output:
+    ansi:
+      enabled: always
   redis:
     host: localhost
     port: 6379
+
+logging:
+  level:
+    org.hibernate.type: trace
+
 
 jwt:
   secret-key: ${JWT_SECRET_KEY}
   access-token-expired-time: ${JWT_ACCESSTOKEN_EXPIRED_TIME_MS}
   refresh-token-expired-time: ${JWT_REFRESHTOKEN_EXPIRED_TIME_MS}
-
-

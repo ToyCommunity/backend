@@ -1,0 +1,31 @@
+### 회원가입
+POST {{user-api}}/api/users
+Content-Type: application/json
+
+{
+  "email": "example123@naver.com",
+  "password": "password12341234",
+  "nickname": "유저닉네임1"
+}
+
+> {%
+client.test("회원가입 성공", function() {
+  client.assert(response.status === 201, "Response status is not 201");
+});
+%}
+
+
+### 로그인
+POST {{user-api}}/api/login
+Content-Type: application/json
+
+{
+  "email": "example123@naver.com",
+  "password": "password12341234"
+}
+
+> {%
+client.test("로그인 성공", function() {
+  client.assert(response.status === 200, "Response status is not 200");
+});
+%}

@@ -15,4 +15,4 @@ else
     echo "No process found running on port 8080"
 fi
 echo "> $JAR_PATH start"
-sudo nohup java -jar /home/ec2-user/toy_com/build/libs/com-0.0.1-SNAPSHOT.jar /dev/null 2> /dev/null < /dev/null &
+sudo nohup java -jar /home/ec2-user/toy_com/build/libs/com-0.0.1-SNAPSHOT.jar > $REPOSITORY/nohup.out 2>&1 &

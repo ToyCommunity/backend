@@ -1,0 +1,82 @@
+name: CI with Gradle
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'feature/*'
+
+env:
+  S3_BUCKET_NAME: codedeploygithubaction
+  AWS_REGION: ap-northeast-2
+  CODEDEPLOY_NAME: toyCommunity
+  CODEDEPLOY_GROUP: deploywithGitHubActions
+  APPLICATION_NAME: deploytest
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: create jwt.properties
+        run: |
+          cd ./src/main/resources
+          touch ./jwt.properties
+          echo "${{ secrets.JWT_APPLICATION }}" > ./jwt.properties
+        shell: bash
+
+      - name: create db.properties
+        run: |
+          cd ./src/main/resources
+          touch ./db.properties
+          echo "${{ secrets.DB_DATASOURCE }}" > ./db.properties
+        shell: bash
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+        shell: bash
+
+      # clean build
+      - name: Build with Gradle
+        run: ./gradlew clean build -x test
+        shell: bash
+
+      # zip 파일 생성
+      - name: Make zip file
+        run: zip -qq -r ./$GITHUB_SHA.zip .
+        shell: bash
+
+      # aws credential 생성
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      # S3 copy
+      - name: Upload to S3
+        run: |
+          aws s3 cp \
+          --region ${{ env.AWS_REGION }} \
+          ./$GITHUB_SHA.zip s3://${{ env.S3_BUCKET_NAME }}/
+
+      - name: Code Deploy
+        run: |
+          aws deploy create-deployment \
+          --application-name $CODEDEPLOY_NAME \
+          --deployment-config-name CodeDeployDefault.AllAtOnce \
+          --file-exists-behavior OVERWRITE \
+          --deployment-group-name $CODEDEPLOY_GROUP \
+          --s3-location bucket=${{ env.S3_BUCKET_NAME }},bundleType=zip,key=$GITHUB_SHA.zip
+

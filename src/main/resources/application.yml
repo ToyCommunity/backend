@@ -1,5 +1,4 @@
 # 데이터 테스트를 위한 H2 db 연결
-
 spring:
   profiles:
     default: local
@@ -8,11 +7,10 @@ spring:
     property-naming-strategy: SNAKE_CASE
     serialization:
       fail-on-empty-beans: false
-
-  datasource:
-    url: jdbc:h2:tcp://localhost/~/toy
-    driver-class-name: org.h2.Driver
-    username: sa
+  #  datasource:
+  #    url: jdbc:h2:tcp://localhost/~/toy
+  #    driver-class-name: org.h2.Driver
+  #    username: sa
   jpa:
     show-sql: true
     hibernate:
@@ -27,9 +25,3 @@ spring:
 logging:
   level:
     org.hibernate.type: trace
-
-
-jwt:
-  secret-key: ${JWT_SECRET_KEY}
-  access-token-expired-time: ${JWT_ACCESSTOKEN_EXPIRED_TIME_MS}
-  refresh-token-expired-time: ${JWT_REFRESHTOKEN_EXPIRED_TIME_MS}

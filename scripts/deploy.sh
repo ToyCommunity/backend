@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-REPOSITORY=/home/ubuntu/toy_com
+REPOSITORY=/home/ec2-user/toy_com
 cd $REPOSITORY
 
 JAR_PATH=$REPOSITORY/build/libs/com-0.0.1-SNAPSHOT.jar
@@ -15,4 +15,4 @@ else
     echo "No process found running on port 8080"
 fi
 echo "> $JAR_PATH start"
-sudo nohup java -jar /home/ubuntu/toy_com/build/libs/com-0.0.1-SNAPSHOT.jar &
+sudo nohup java -jar /home/ec2-user/toy_com/build/libs/com-0.0.1-SNAPSHOT.jar &

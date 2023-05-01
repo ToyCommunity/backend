@@ -10,8 +10,9 @@ env:
   S3_BUCKET_NAME: codedeploygithubaction
   AWS_REGION: ap-northeast-2
   CODEDEPLOY_NAME: toyCommunity
-  CODEDEPLOY_GROUP: deploywithGitHubActions
-  APPLICATION_NAME: deploytest
+  #  CODEDEPLOY_GROUP: deploywithGitHubActions
+  CODEDEPLOY_GROUP: ec2UserDeploy
+
 
 jobs:
   build:

@@ -1,12 +1,18 @@
 #!/usr/bin/env bash
 REPOSITORY=/home/ubuntu/toy_com
-# shellcheck disable=SC2164
 cd $REPOSITORY
 
 JAR_PATH=$REPOSITORY/build/libs/com-0.0.1-SNAPSHOT.jar
 
-echo ">kill java process"
-sudo killall java
+FILENAME="com-0.0.1-SNAPSHOT"
 
+PID=$(lsof | grep $FILENAME | awk '{print $2}')
+
+if [ -n "$PID" ]; then
+    echo "Killing process $PID running on port 8080"
+    kill $PID
+else
+    echo "No process found running on port 8080"
+fi
 echo "> $JAR_PATH start"
-sudo nohup java -jar /home/ubuntu/toy_com/build/libs/com-0.0.1-SNAPSHOT.jar > /dev/null 2> /dev/null < /dev/null &
+sudo nohup java -jar /home/ubuntu/toy_com/build/libs/com-0.0.1-SNAPSHOT.jar &

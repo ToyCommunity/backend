@@ -29,19 +29,32 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: create jwt.properties
-        run: |
-          cd ./src/main/resources
-          touch ./jwt.properties
-          echo "${{ secrets.JWT_APPLICATION }}" > ./jwt.properties
-        shell: bash
+      - name: Set yaml file
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ${{ env.RESOURCE_PATH }}
+        env:
+          jwt.secret-key: ${{ secrets.JWT_SECRET_KEY }}
+          jwt.access-token-expired-time: ${{ secrets.JWT_ACCESS_TIME }}
+          jwt.refresh-token-expired-time: ${{ secrets.JWT_REFRESH_TIME }}
+          spring.datasource.url: ${{ secrets.DB_URL }}
+          spring.datasource.username: ${{ secrets.DB_USER_NAME }}
+          spring.datasource.password=: ${{ secrets.DB_PASS_WORD }}
 
-      - name: create db.properties
-        run: |
-          cd ./src/main/resources
-          touch ./db.properties
-          echo "${{ secrets.DB_DATASOURCE }}" > ./db.properties
-        shell: bash
+      
+      #      - name: create jwt.properties
+      #        run: |
+      #          cd ./src/main/resources
+      #          touch ./jwt.properties
+      #          echo "${{ secrets.JWT_APPLICATION }}" > ./jwt.properties
+      #        shell: bash
+      #
+      #      - name: create db.properties
+      #        run: |
+      #          cd ./src/main/resources
+      #          touch ./db.properties
+      #          echo "${{ secrets.DB_DATASOURCE }}" > ./db.properties
+      #        shell: bash
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew

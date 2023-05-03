@@ -1,18 +1,19 @@
 #!/usr/bin/env bash
 REPOSITORY=/home/ec2-user/toy_com
-cd $REPOSITORY
+JAR_PATH="$REPOSITORY/build/libs/*.jar"
+BUILD_JAR=$(ls $JAR_PATH)
+JAR_NAME=${basename $BUILD_JAR}
 
-JAR_PATH=$REPOSITORY/build/libs/com-0.0.1-SNAPSHOT.jar
+CURRENT_PID=$(pgrep -f $JAR_NAME)
 
-FILENAME="com-0.0.1-SNAPSHOT"
-
-PID=$(lsof | grep $FILENAME | awk '{print $2}')
-
-if [ -n "$PID" ]; then
-    echo "Killing process $PID running on port 8080"
-    kill $PID
+if [ -z $CURRENT_PID ]
+then
+    echo "kill application pid : $CURRENT_PID"
+    kill -9 $CURRENT_PID
 else
-    echo "No process found running on port 8080"
+    echo "No application running"
 fi
+
+sleep 5
 echo "> $JAR_PATH start"
 sudo nohup java -jar /home/ec2-user/toy_com/build/libs/com-0.0.1-SNAPSHOT.jar > $REPOSITORY/nohup.out 2>&1 &

@@ -42,21 +42,6 @@ jobs:
           spring.datasource.username: ${{ secrets.DB_USER_NAME }}
           spring.datasource.password=: ${{ secrets.DB_PASS_WORD }}
 
-
-      #      - name: create jwt.properties
-      #        run: |
-      #          cd ./src/main/resources
-      #          touch ./jwt.properties
-      #          echo "${{ secrets.JWT_APPLICATION }}" > ./jwt.properties
-      #        shell: bash
-      #
-      #      - name: create db.properties
-      #        run: |
-      #          cd ./src/main/resources
-      #          touch ./db.properties
-      #          echo "${{ secrets.DB_DATASOURCE }}" > ./db.properties
-      #        shell: bash
-
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
         shell: bash

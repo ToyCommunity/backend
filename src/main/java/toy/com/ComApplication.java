@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
  */
 @EnableJpaAuditing
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
-// @PropertySource(value = {"classpath:jwt.properties", "classpath:db.properties"})
 public class ComApplication {
 
 	public static void main(String[] args) {

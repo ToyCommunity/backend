@@ -1,5 +1,4 @@
 # 데이터 테스트를 위한 H2 db 연결
-
 spring:
   profiles:
     default: local
@@ -8,15 +7,17 @@ spring:
     property-naming-strategy: SNAKE_CASE
     serialization:
       fail-on-empty-beans: false
-
   datasource:
-    url: jdbc:h2:tcp://localhost/~/toy
-    driver-class-name: org.h2.Driver
-    username: sa
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${db.url}
+    username: ${db.username}
+    password: ${db.password}
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    database: mysql
   output:
     ansi:
       enabled: always
@@ -28,8 +29,7 @@ logging:
   level:
     org.hibernate.type: trace
 
-
 jwt:
-  secret-key: ${JWT_SECRET_KEY}
-  access-token-expired-time: ${JWT_ACCESSTOKEN_EXPIRED_TIME_MS}
-  refresh-token-expired-time: ${JWT_REFRESHTOKEN_EXPIRED_TIME_MS}
+  secret-key: ${jwt.secret-key}
+  access-token-expired-time: ${jwt.access-token-expired-time}
+  refresh-token-expired-time: ${jwt.refresh-token-expired-time}

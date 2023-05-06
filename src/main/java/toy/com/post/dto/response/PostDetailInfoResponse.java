@@ -17,8 +17,8 @@ public record PostDetailInfoResponse(@Schema(description = "게시글 id")
 									 String title,
 									 @Schema(description = "게시글 작성 유저 id")
 									 Long userId,
-									 @Schema(description = "게시글 작성 유저 name")
-									 String userName,
+									 @Schema(description = "게시글 작성 유저 nickName")
+									 String nickName,
 									 @Schema(description = "게시글 작성 유저 프로필 이미지")
 									 String userProfileImg,
 									 @Schema(description = "게시글 카테고리 코드")

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import toy.com.exception.CustomException;
 import toy.com.post.domain.Post;
 import toy.com.post.domain.PostAdditional;
+import toy.com.post.domain.PostCategory;
 import toy.com.post.domain.PostStatus;
 import toy.com.post.dto.request.PostCreateRequest;
 import toy.com.post.dto.request.PostModifyRequest;
@@ -43,7 +44,7 @@ public class PostCommandService {
 		postRepository.save(Post.builder()
 			.postTitle(request.title())
 			.postContent(request.content())
-			.postCategory(request.category())
+			.postCategory(PostCategory.DEFAULT)
 			.postStatus(PostStatus.NORMAL)
 			.postWriter(sampleUser)
 			.build());

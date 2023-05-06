@@ -22,7 +22,7 @@ public record PostDetailInfoResponse(@Schema(description = "게시글 id")
 									 @Schema(description = "게시글 작성 유저 프로필 이미지")
 									 String userProfileImg,
 									 @Schema(description = "게시글 내용")
-									 String postContent,
+									 String content,
 									 @Schema(description = "게시글 카테고리 코드")
 									 int category,
 									 @Schema(description = "게시글 좋아요 개수")

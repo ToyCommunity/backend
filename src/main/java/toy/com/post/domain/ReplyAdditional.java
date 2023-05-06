@@ -23,7 +23,7 @@ import toy.com.user.domain.User;
 
 @Entity
 @Getter
-@ToString(exclude = {"reactionLikeReplyUser", "reactionReply"})
+@ToString(exclude = {"likeUser", "reactionReply"})
 @EqualsAndHashCode(of = "id", callSuper = false)
 @Table(name = "reply_additional")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

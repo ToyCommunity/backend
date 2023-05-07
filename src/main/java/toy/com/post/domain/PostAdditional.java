@@ -23,7 +23,7 @@ import toy.com.user.domain.User;
 
 @Entity
 @Getter
-@ToString(exclude = {"reactionLikePostUser", "reactionPost"})
+@ToString(exclude = {"likeUser", "reactionPost"})
 @DynamicUpdate
 @EqualsAndHashCode(of = "id", callSuper = false)
 @Table(name = "post_additional")

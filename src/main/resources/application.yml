@@ -4,7 +4,6 @@ spring:
     default: local
   jackson:
     default-property-inclusion: non_null
-    property-naming-strategy: SNAKE_CASE
     serialization:
       fail-on-empty-beans: false
   datasource:
@@ -15,7 +14,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     database: mysql
   output:
@@ -23,7 +22,14 @@ spring:
       enabled: always
   redis:
     host: localhost
-    port: 6379
+    port: 6398
+
+  # pageable 설정
+  data:
+    web:
+      pageable:
+        default-page-size: 20
+        one-indexed-parameters: true
 
 logging:
   level:

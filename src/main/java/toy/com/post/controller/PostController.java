@@ -1,7 +1,6 @@
 package toy.com.post.controller;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,8 +29,6 @@ import toy.com.post.service.PostQueryService;
 @Tag(name = "post-controller", description = "게시글 관련 API")
 public class PostController {
 
-	private static final int DEFAULT_PAGE_COUNT = 20;
-
 	private final PostQueryService postQueryService;
 	private final PostCommandService postCommandService;
 
@@ -56,7 +53,7 @@ public class PostController {
 
 	@Operation(summary = "게시글 리스트 조회", description = "게시글 리스트를 요청한다")
 	@GetMapping(value = "/list", produces = "application/json")
-	public PostListsResponse getPostList(@PageableDefault(size = DEFAULT_PAGE_COUNT) Pageable page) {
+	public PostListsResponse getPostList(Pageable page) {
 		return postQueryService.getPostListPerPage(page);
 	}
 

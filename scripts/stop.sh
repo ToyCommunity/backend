@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 REPOSITORY="/home/ec2-user/toy_com"
 JAR_FILE="$REPOSITORY/build/libs/com-0.0.1-SNAPSHOT.jar"

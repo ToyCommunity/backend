@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 
-REPOSITORY=/home/ec2-user/toy_com
-JAR_PATH=$REPOSITORY/build/libs/*.jar
-BUILD_JAR=$(ls $JAR_PATH)
-JAR_NAME=$(basename $BUILD_JAR)
-CURRENT_PID=$(pgrep -f $JAR_NAME)
+REPOSITORY="/home/ec2-user/toy_com"
+JAR_FILE="$REPOSITORY/build/libs/com-0.0.1-SNAPSHOT.jar"
+CURRENT_PID=$(pgrep -f $JAR_FILE)
 
 if [ -z $CURRENT_PID ]; then
   echo "No application Running"

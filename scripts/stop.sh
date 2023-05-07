@@ -10,5 +10,5 @@ if [ -z $CURRENT_PID ]; then
   echo "No application Running"
 else
   echo "kill application"
-  kill -9 $CURRENT_PID
+  sudo kill -9 $CURRENT_PID
 fi

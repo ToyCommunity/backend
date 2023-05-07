@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import lombok.extern.slf4j.Slf4j;
 import redis.embedded.RedisServer;
 
 @Profile("local")
+@Slf4j
 @Configuration
 public class EmbeddedRedis {
 
@@ -28,7 +30,11 @@ public class EmbeddedRedis {
 				.setting("maxmemory 128M")
 				.build();
 
-			redisServer.start();
+			try {
+				redisServer.start();
+			} catch (Exception ex) {
+				log.error("Start without Redis", ex);
+			}
 		}
 	}
 

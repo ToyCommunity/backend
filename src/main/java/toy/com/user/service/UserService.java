@@ -48,4 +48,11 @@ public class UserService {
 	public User findById(Long id) {
 		return userRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
 	}
+
+	public void logout(Long id) {
+		User user = userRepository.findById(id)
+			.orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+
+		redisService.deleteToken(user.getId());
+	}
 }

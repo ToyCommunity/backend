@@ -20,6 +20,9 @@ public enum ErrorCode {
 	NOT_FOUND_POST(CommonCode.NOT_FOUND_POST.getCode(), HttpStatus.BAD_REQUEST, "존재하지 않은 게시글 입니다"),
 	NOT_FOUND_REPLY_STATUS(CommonCode.NOT_FOUND_REPLY_STATUS.getCode(), HttpStatus.BAD_REQUEST, "존재하지 않은 댓글 상태입니다"),
 	NOT_FOUND_REPLY(CommonCode.NOT_FOUND_REPLY.getCode(), HttpStatus.BAD_REQUEST, "존재하지 않는 댓글입니다"),
+	INVALID_TOKEN(CommonCode.INVALID_TOKEN.getCode(), HttpStatus.BAD_REQUEST, "유효하지 않은 토큰 형식입니다"),
+	EXPIRED_TOKEN(CommonCode.EXPIRED_TOKEN.getCode(), HttpStatus.UNAUTHORIZED, "토큰 만료되었습니다"),
+	TOKEN_ERROR(CommonCode.TOKEN_ERROR.getCode(), HttpStatus.UNAUTHORIZED, "알수없는 토큰 에러"),
 
 	//5XX
 	ERROR(CommonCode.ERROR.getCode(), HttpStatus.INTERNAL_SERVER_ERROR, "서버 에러");

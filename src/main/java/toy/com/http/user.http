@@ -24,8 +24,15 @@ Content-Type: application/json
   "password": "password12341234"
 }
 
+
 > {%
+client.global.set("auth_token", response.body.access_token);
 client.test("로그인 성공", function() {
   client.assert(response.status === 200, "Response status is not 200");
 });
 %}
+
+
+### 로그아웃
+POST {{user-api}}/api/logout
+Authorization: Bearer {{auth_token}}

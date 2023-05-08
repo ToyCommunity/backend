@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import toy.com.config.auth.UserAuthentication;
 import toy.com.user.dto.request.LoginRequest;
 import toy.com.user.dto.request.UserJoinRequest;
 import toy.com.user.dto.response.TokenResponse;
@@ -18,4 +19,7 @@ public interface UserControllerSwagger {
 
 	@Operation(summary = "로그인", description = "로그인 요청")
 	TokenResponse login(@Valid @RequestBody LoginRequest loginRequest);
+
+	@Operation(summary = "로그아웃")
+	void logout(UserAuthentication userAuthentication);
 }

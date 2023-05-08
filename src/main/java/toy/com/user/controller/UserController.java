@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import toy.com.config.auth.UserAuthentication;
 import toy.com.user.dto.request.LoginRequest;
 import toy.com.user.dto.request.UserJoinRequest;
 import toy.com.user.dto.response.TokenResponse;
@@ -31,5 +32,10 @@ public class UserController implements UserControllerSwagger {
 	@PostMapping("/api/login")
 	public TokenResponse login(@Valid @RequestBody LoginRequest loginRequest) {
 		return userService.login(loginRequest.toEntity());
+	}
+
+	@PostMapping("/api/logout")
+	public void logout(UserAuthentication userAuthentication) {
+		userService.logout(userAuthentication.id());
 	}
 }

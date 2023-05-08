@@ -21,6 +21,11 @@ public enum CommonCode {
 	NOT_FOUND_USER("U-003"),
 	PASSWORD_NOT_MATCH("U-004"),
 
+	// Token
+	INVALID_TOKEN("T-001"),
+	EXPIRED_TOKEN("T-002"),
+	TOKEN_ERROR("T-003"),
+
 	// Post-001
 	NOT_FOUND_POST_STATUS("P-001"),
 	NOT_FOUND_POST("P-002"),

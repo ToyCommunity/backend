@@ -68,7 +68,8 @@ class UserServiceTest {
 	void login_success() {
 
 		//given
-		userService.join(makeUser("useremail@naver.com", encrypt("asdf1234"), "닉네임11111"));
+		User user = makeUser("useremail@naver.com", encrypt("asdf1234"), "닉네임11111");
+		userService.join(user);
 
 		//when
 		LoginRequest loginRequest = LoginRequest.builder()
@@ -78,7 +79,7 @@ class UserServiceTest {
 		TokenResponse loginResponse = userService.login(loginRequest.toEntity());
 
 		//then
-		assertThat(redisService.getIdByRefreshToken(loginResponse.refreshToken())).isNotNull();
+		assertThat(redisService.getTokenById(user.getId())).isNotNull();
 		assertThat(loginResponse.accessToken()).isNotNull();
 		assertThat(loginResponse.refreshToken()).isNotNull();
 	}
@@ -119,6 +120,28 @@ class UserServiceTest {
 
 		//then
 		assertThat(exception.getErrorcode()).isEqualTo(ErrorCode.PASSWORD_NOT_MATCH);
+	}
+
+	@Test
+	@DisplayName("로그아웃 성공: redis 토큰을 삭제한다")
+	void logout_success() {
+
+		//given
+		User user = makeUser("useremail@naver.com", encrypt("asdf1234"), "닉네임11111");
+		userService.join(user);
+
+		//when
+		LoginRequest loginRequest = LoginRequest.builder()
+			.email("useremail@naver.com")
+			.password("asdf1234")
+			.build();
+		userService.login(loginRequest.toEntity());
+
+		assertThat(redisService.getTokenById(user.getId())).isNotNull();
+		userService.logout(user.getId());
+
+		//then
+		assertThat(redisService.getTokenById(user.getId())).isNull();
 	}
 
 	private User makeUser(String email, String password, String nickname) {

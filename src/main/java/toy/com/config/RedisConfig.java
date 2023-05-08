@@ -27,11 +27,11 @@ public class RedisConfig {
 	}
 
 	@Bean
-	public RedisTemplate<String, Long> tokenRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
-		RedisTemplate<String, Long> redisTemplate = new RedisTemplate<>();
+	public RedisTemplate<Long, String> tokenRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+		RedisTemplate<Long, String> redisTemplate = new RedisTemplate<>();
 		redisTemplate.setConnectionFactory(redisConnectionFactory);
-		redisTemplate.setKeySerializer(new StringRedisSerializer());
-		redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(Long.class));
+		redisTemplate.setKeySerializer(new Jackson2JsonRedisSerializer<>(Long.class));
+		redisTemplate.setValueSerializer(new StringRedisSerializer());
 		return redisTemplate;
 	}
 }

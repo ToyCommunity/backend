@@ -20,7 +20,7 @@ import toy.com.user.repository.UserRepository;
 public class UserService {
 
 	private final UserRepository userRepository;
-	private final TokenFactory tokenFactory;
+	private final TokenService tokenService;
 	private final RedisService redisService;
 
 	public void join(User user) {
@@ -39,13 +39,20 @@ public class UserService {
 			throw new CustomException(ErrorCode.PASSWORD_NOT_MATCH);
 		}
 
-		TokenResponse tokenResponse = tokenFactory.issueToken(joinUser.getId());
-		redisService.setToken(tokenResponse.refreshToken(), joinUser.getId());
+		TokenResponse tokenResponse = tokenService.issueToken(joinUser.getId(), joinUser.getNickname());
+		redisService.setToken(joinUser.getId(), tokenResponse.refreshToken());
 		return tokenResponse;
 	}
 
 	@Transactional(readOnly = true)
 	public User findById(Long id) {
 		return userRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+	}
+
+	public void logout(Long id) {
+		User user = userRepository.findById(id)
+			.orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+
+		redisService.deleteToken(user.getId());
 	}
 }

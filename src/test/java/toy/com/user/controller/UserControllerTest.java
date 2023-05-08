@@ -17,10 +17,12 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import toy.com.config.auth.AuthEnum;
 import toy.com.exception.code.ErrorCode;
 import toy.com.user.domain.User;
 import toy.com.user.dto.request.LoginRequest;
 import toy.com.user.dto.request.UserJoinRequest;
+import toy.com.user.dto.response.TokenResponse;
 import toy.com.user.repository.UserRepository;
 import toy.com.user.service.UserService;
 
@@ -129,8 +131,8 @@ class UserControllerTest {
 				.contentType(APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(loginRequest)))
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.accessToken").isNotEmpty())
-			.andExpect(jsonPath("$.refreshToken").isNotEmpty())
+			.andExpect(jsonPath("$.access_token").isNotEmpty())
+			.andExpect(jsonPath("$.refresh_token").isNotEmpty())
 			.andDo(print());
 	}
 
@@ -194,6 +196,24 @@ class UserControllerTest {
 			.andExpect(jsonPath("result").value(ERROR))
 			.andExpect(jsonPath("detail.code").value(ErrorCode.PASSWORD_NOT_MATCH.getCode()))
 			.andExpect(jsonPath("detail.message").value(ErrorCode.PASSWORD_NOT_MATCH.getMessage()))
+			.andDo(print());
+	}
+
+	@Test
+	@DisplayName("로그아웃")
+	void logout_success() throws Exception {
+		//given
+		userService.join(makeUser("useremail@naver.com", encrypt("asdf1234"), "닉네임11111"));
+
+		LoginRequest loginRequest = LoginRequest.builder()
+			.email("useremail@naver.com")
+			.password("asdf1234")
+			.build();
+		TokenResponse loginResponse = userService.login(loginRequest.toEntity());
+
+		mockMvc.perform(post("/api/logout")
+				.header(AuthEnum.HEADER.getValue(), AuthEnum.TOKEN_TYPE.getValue() + loginResponse.accessToken()))
+			.andExpect(status().isOk())
 			.andDo(print());
 	}
 

@@ -1,7 +1,6 @@
 package toy.com.user.service;
 
 import java.time.Duration;
-import java.util.Optional;
 
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -15,13 +14,17 @@ import lombok.RequiredArgsConstructor;
 @Component
 public class RedisService {
 
-	private final RedisTemplate<String, Long> token;
+	private final RedisTemplate<Long, String> redisTemplate;
 
-	public void setToken(String refreshToken, Long id) {
-		token.opsForValue().set(refreshToken, id, Duration.ofDays(7));
+	public void setToken(Long id, String refreshToken) {
+		redisTemplate.opsForValue().set(id, refreshToken, Duration.ofDays(7));
 	}
 
-	public Optional<Long> getIdByRefreshToken(String refreshToken) {
-		return Optional.ofNullable(token.opsForValue().get(refreshToken));
+	public String getTokenById(Long id) {
+		return redisTemplate.opsForValue().get(id);
+	}
+
+	public void deleteToken(Long id) {
+		redisTemplate.delete(id);
 	}
 }

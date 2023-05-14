@@ -64,7 +64,6 @@ class PostControllerTest {
 		PostCreateRequest request = PostCreateRequest.builder()
 			.title("테스트")
 			.content("테스트")
-			.category(PostCategory.DEFAULT)
 			.build();
 
 		mockMvc.perform(post("/api/post/write")
@@ -128,7 +127,6 @@ class PostControllerTest {
 		PostCreateRequest request = PostCreateRequest.builder()
 			.title("테스트")
 			.content("테스트")
-			.category(PostCategory.DEFAULT)
 			.build();
 
 		postCommandService.createPost(request);
@@ -147,7 +145,6 @@ class PostControllerTest {
 		PostCreateRequest request = PostCreateRequest.builder()
 			.title("테스트")
 			.content("테스트")
-			.category(PostCategory.DEFAULT)
 			.build();
 
 		postCommandService.createPost(request);
@@ -161,7 +158,7 @@ class PostControllerTest {
 			.andExpect(jsonPath("postId").value(res.postId()))
 			.andExpect(jsonPath("title").value(res.title()))
 			.andExpect(jsonPath("userId").value(res.userId()))
-			.andExpect(jsonPath("userName").value(res.userName()))
+			.andExpect(jsonPath("userName").value(res.nickname()))
 			.andExpect(jsonPath("category").value(res.category()))
 			.andExpect(jsonPath("likeCounts").value(res.likeCounts()))
 			.andExpect(jsonPath("viewCounts").value(res.viewCounts() + 1))
@@ -177,7 +174,6 @@ class PostControllerTest {
 		PostCreateRequest request = PostCreateRequest.builder()
 			.title("테스트")
 			.content("테스트")
-			.category(PostCategory.DEFAULT)
 			.build();
 
 		postCommandService.createPost(request);

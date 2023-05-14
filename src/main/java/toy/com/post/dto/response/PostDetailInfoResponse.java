@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import toy.com.post.dto.ReplyDto;
 
-@Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record PostDetailInfoResponse(@Schema(description = "게시글 id")
 									 Long postId,
@@ -35,4 +34,7 @@ public record PostDetailInfoResponse(@Schema(description = "게시글 id")
 									 List<ReplyDto> replies,
 									 @Schema(description = "게시글 생성일자")
 									 LocalDateTime createdAt) {
+
+	@Builder
+	public PostDetailInfoResponse {}
 }

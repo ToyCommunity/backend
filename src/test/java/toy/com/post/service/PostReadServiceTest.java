@@ -33,7 +33,7 @@ class PostReadServiceTest {
 	private static final int PAGE_SIZE = 20;
 
 	@Autowired
-	private PostReadService postReadService;
+	private PostQueryService postQueryService;
 
 	@Autowired
 	private PostRepository postRepository;
@@ -91,7 +91,7 @@ class PostReadServiceTest {
 
 		Pageable pageable = PageRequest.of(page, PAGE_SIZE);
 
-		PostListsResponse response = postReadService.getPostListPerPage(pageable);
+		PostListsResponse response = postQueryService.getPostListPerPage(pageable);
 
 		assertThat(response.postResults().size()).isEqualTo(PAGE_SIZE);
 	}
@@ -102,7 +102,7 @@ class PostReadServiceTest {
 
 		Long samplePostId = 1L;
 
-		PostDetailInfoResponse infoResponse = postReadService.getPostDetail(samplePostId);
+		PostDetailInfoResponse infoResponse = postQueryService.getPostDetail(samplePostId);
 
 		System.out.println(infoResponse);
 	}

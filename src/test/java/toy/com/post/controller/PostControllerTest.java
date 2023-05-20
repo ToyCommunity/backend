@@ -64,10 +64,9 @@ class PostControllerTest {
 		PostCreateRequest request = PostCreateRequest.builder()
 			.title("테스트")
 			.content("테스트")
-			.category(PostCategory.DEFAULT)
 			.build();
 
-		mockMvc.perform(post("/api/post/write")
+		mockMvc.perform(post("/api/posts")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(request)))
 			.andExpect(status().isCreated())
@@ -94,7 +93,7 @@ class PostControllerTest {
 			.category(PostCategory.DEFAULT)
 			.build();
 
-		mockMvc.perform(patch("/api/post/modify")
+		mockMvc.perform(patch("/api/posts")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(request)))
 			.andExpect(status().isOk())
@@ -114,7 +113,7 @@ class PostControllerTest {
 
 		postRepository.save(createPost);
 
-		mockMvc.perform(delete("/api/post/delete/{postId}", createPost.getId()))
+		mockMvc.perform(delete("/api/posts/{postId}", createPost.getId()))
 			.andExpect(status().isOk())
 			.andDo(print());
 	}
@@ -128,12 +127,11 @@ class PostControllerTest {
 		PostCreateRequest request = PostCreateRequest.builder()
 			.title("테스트")
 			.content("테스트")
-			.category(PostCategory.DEFAULT)
 			.build();
 
 		postCommandService.createPost(request);
 
-		mockMvc.perform(get("/api/post/list")
+		mockMvc.perform(get("/api/posts/list")
 				.contentType("application/x-www-form-urlencoded")
 				.param("page", String.valueOf(page)))
 			.andExpect(status().isOk())
@@ -147,7 +145,6 @@ class PostControllerTest {
 		PostCreateRequest request = PostCreateRequest.builder()
 			.title("테스트")
 			.content("테스트")
-			.category(PostCategory.DEFAULT)
 			.build();
 
 		postCommandService.createPost(request);
@@ -156,12 +153,12 @@ class PostControllerTest {
 
 		PostDetailInfoResponse res = postQueryService.getPostDetail(post.getId());
 
-		mockMvc.perform(get("/api/post/detail/{postId}", post.getId())
+		mockMvc.perform(get("/api/posts/detail/{postId}", post.getId())
 				.contentType(APPLICATION_JSON))
 			.andExpect(jsonPath("postId").value(res.postId()))
 			.andExpect(jsonPath("title").value(res.title()))
 			.andExpect(jsonPath("userId").value(res.userId()))
-			.andExpect(jsonPath("userName").value(res.userName()))
+			.andExpect(jsonPath("nickname").value(res.nickname()))
 			.andExpect(jsonPath("category").value(res.category()))
 			.andExpect(jsonPath("likeCounts").value(res.likeCounts()))
 			.andExpect(jsonPath("viewCounts").value(res.viewCounts() + 1))
@@ -177,14 +174,33 @@ class PostControllerTest {
 		PostCreateRequest request = PostCreateRequest.builder()
 			.title("테스트")
 			.content("테스트")
-			.category(PostCategory.DEFAULT)
 			.build();
 
 		postCommandService.createPost(request);
 
 		Post post = postRepository.findAll().get(0);
 
-		mockMvc.perform(put("/api/post/like/{postId}", post.getId()))
+		mockMvc.perform(post("/api/posts/like/{postId}", post.getId()))
+			.andExpect(status().isOk())
+			.andDo(print());
+	}
+
+	@Test
+	@DisplayName("게시글 좋아요 취소 테스트")
+	void postDisLike() throws Exception {
+
+		PostCreateRequest request = PostCreateRequest.builder()
+			.title("테스트")
+			.content("테스트")
+			.build();
+
+		postCommandService.createPost(request);
+
+		Post post = postRepository.findAll().get(0);
+
+		System.out.println(post.getId());
+
+		mockMvc.perform(delete("/api/posts/like/{postId}", post.getId()))
 			.andExpect(status().isOk())
 			.andDo(print());
 	}

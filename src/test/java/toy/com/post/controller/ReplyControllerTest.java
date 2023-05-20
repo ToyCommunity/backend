@@ -16,15 +16,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import toy.com.post.domain.Post;
-import toy.com.post.domain.PostCategory;
 import toy.com.post.domain.Reply;
 import toy.com.post.dto.request.PostCreateRequest;
 import toy.com.post.dto.request.ReplyCreateRequest;
 import toy.com.post.dto.request.ReplyModifyRequest;
 import toy.com.post.repository.PostRepository;
 import toy.com.post.repository.ReplyRepository;
-import toy.com.post.service.PostWriteService;
-import toy.com.post.service.ReplyWriteService;
+import toy.com.post.service.PostCommandService;
+import toy.com.post.service.ReplyCommandService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -37,10 +36,10 @@ class ReplyControllerTest {
 	private ObjectMapper objectMapper;
 
 	@Autowired
-	private ReplyWriteService replyWriteService;
+	private ReplyCommandService replyCommandService;
 
 	@Autowired
-	private PostWriteService postWriteService;
+	private PostCommandService postCommandService;
 
 	@Autowired
 	private PostRepository postRepository;
@@ -61,10 +60,9 @@ class ReplyControllerTest {
 		PostCreateRequest request = PostCreateRequest.builder()
 			.title("테스트")
 			.content("테스트")
-			.category(PostCategory.DEFAULT)
 			.build();
 
-		postWriteService.createPost(request);
+		postCommandService.createPost(request);
 
 		Post post = postRepository.findAll().get(0);
 
@@ -73,7 +71,7 @@ class ReplyControllerTest {
 			.content("테스트")
 			.build();
 
-		mockMvc.perform(post("/api/reply/write")
+		mockMvc.perform(post("/api/reply")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(replyCreateRequest)))
 			.andExpect(status().isCreated())
@@ -87,10 +85,9 @@ class ReplyControllerTest {
 		PostCreateRequest request = PostCreateRequest.builder()
 			.title("테스트")
 			.content("테스트")
-			.category(PostCategory.DEFAULT)
 			.build();
 
-		postWriteService.createPost(request);
+		postCommandService.createPost(request);
 
 		Post post = postRepository.findAll().get(0);
 
@@ -99,7 +96,7 @@ class ReplyControllerTest {
 			.content("테스트")
 			.build();
 
-		replyWriteService.createReply(replyCreateRequest);
+		replyCommandService.createReply(replyCreateRequest);
 
 		Reply reply = replyRepository.findAll().get(0);
 
@@ -108,7 +105,7 @@ class ReplyControllerTest {
 			.content("수정테스트")
 			.build();
 
-		mockMvc.perform(patch("/api/reply/modify")
+		mockMvc.perform(patch("/api/reply")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(modifyRequest)))
 			.andExpect(status().isOk())
@@ -122,10 +119,9 @@ class ReplyControllerTest {
 		PostCreateRequest request = PostCreateRequest.builder()
 			.title("테스트")
 			.content("테스트")
-			.category(PostCategory.DEFAULT)
 			.build();
 
-		postWriteService.createPost(request);
+		postCommandService.createPost(request);
 
 		Post post = postRepository.findAll().get(0);
 
@@ -134,11 +130,11 @@ class ReplyControllerTest {
 			.content("테스트")
 			.build();
 
-		replyWriteService.createReply(replyCreateRequest);
+		replyCommandService.createReply(replyCreateRequest);
 
 		Reply reply = replyRepository.findAll().get(0);
 
-		mockMvc.perform(delete("/api/reply/delete/{replyId}", reply.getId()))
+		mockMvc.perform(delete("/api/reply/{replyId}", reply.getId()))
 			.andExpect(status().isOk())
 			.andDo(print());
 	}
@@ -150,10 +146,9 @@ class ReplyControllerTest {
 		PostCreateRequest request = PostCreateRequest.builder()
 			.title("테스트")
 			.content("테스트")
-			.category(PostCategory.DEFAULT)
 			.build();
 
-		postWriteService.createPost(request);
+		postCommandService.createPost(request);
 
 		Post post = postRepository.findAll().get(0);
 
@@ -162,11 +157,39 @@ class ReplyControllerTest {
 			.content("테스트")
 			.build();
 
-		replyWriteService.createReply(replyCreateRequest);
+		replyCommandService.createReply(replyCreateRequest);
 
 		Reply reply = replyRepository.findAll().get(0);
 
-		mockMvc.perform(put("/api/reply/like/{replyId}", reply.getId()))
+		mockMvc.perform(post("/api/reply/like/{replyId}", reply.getId()))
+			.andExpect(status().isOk())
+			.andDo(print());
+	}
+
+	@Test
+	@DisplayName("댓글 좋아요 취소 테스트")
+	void disLikeReply() throws Exception {
+
+		PostCreateRequest request = PostCreateRequest.builder()
+			.title("테스트")
+			.content("테스트")
+			.build();
+
+		postCommandService.createPost(request);
+
+		Post post = postRepository.findAll().get(0);
+
+		ReplyCreateRequest replyCreateRequest = ReplyCreateRequest.builder()
+			.postId(post.getId())
+			.content("테스트")
+			.build();
+
+		replyCommandService.createReply(replyCreateRequest);
+
+		Reply reply = replyRepository.findAll().get(0);
+		System.out.println(reply.getId());
+
+		mockMvc.perform(delete("/api/reply/like/{replyId}", reply.getId()))
 			.andExpect(status().isOk())
 			.andDo(print());
 	}

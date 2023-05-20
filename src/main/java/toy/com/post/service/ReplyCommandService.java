@@ -72,13 +72,22 @@ public class ReplyCommandService {
 
 		Reply reply = findReplyByReplyId(replyId);
 
-		reply.updateReplyLike();
+		reply.plusReplyLikeCount();
 		replyRepository.save(reply);
 
 		replyAdditionalRepository.save(ReplyAdditional.builder()
 			.reactionReply(reply)
 			.likeUser(reactionReplyUser)
 			.build());
+	}
+
+	public void disLikeReply(Long replyId) {
+
+		Reply disLikeReply = findReplyByReplyId(replyId);
+
+		disLikeReply.minusReplyLikeCount();
+		replyRepository.save(disLikeReply);
+		replyAdditionalRepository.deleteByReactionReplyId(replyId);
 	}
 
 	public Reply findReplyByReplyId(Long replyId) {

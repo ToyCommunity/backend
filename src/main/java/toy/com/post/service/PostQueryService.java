@@ -31,13 +31,14 @@ public class PostQueryService {
 	public PostListsResponse getPostListPerPage(Pageable page) {
 
 		int totalPosts = postRepository.countBy();
+		int totalPages = (int)Math.ceil((double)totalPosts / DEFAULT_PAGE_COUNT);
 
 		return PostListsResponse.builder()
 			.postResults(getPostPerPage(page))
 			.page(page.getPageNumber())
 			.perCounts(getPostPerPage(page).size())
 			.totalPosts(totalPosts)
-			.totalPages(totalPosts / DEFAULT_PAGE_COUNT)
+			.totalPages(totalPages < 0 ? 1 : totalPages)
 			.build();
 	}
 

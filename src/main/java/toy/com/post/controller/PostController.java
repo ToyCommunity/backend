@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -65,9 +64,15 @@ public class PostController {
 	}
 
 	@Operation(summary = "게시글 좋아요", description = "게시글 좋아요를 한다")
-	@PutMapping(value = "/like/{postId}")
+	@PostMapping(value = "/like/{postId}")
 	public void likePost(@PathVariable Long postId) {
-		postCommandService.updateLikePost(postId);
+		postCommandService.likePost(postId);
+	}
+
+	@Operation(summary = "게시글 좋아요 취소", description = "게시글 좋아요를 취소 한다")
+	@DeleteMapping(value = "/like/{postId}")
+	public void dislikePost(@PathVariable Long postId) {
+		postCommandService.disLikePost(postId);
 	}
 
 }

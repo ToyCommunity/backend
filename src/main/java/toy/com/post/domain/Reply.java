@@ -101,8 +101,12 @@ public class Reply extends BaseTimeEntity {
 		this.replyStatus = ReplyStatus.DELETED;
 	}
 
-	public void updateReplyLike() {
+	public void plusReplyLikeCount() {
 		this.replyLikes += 1;
+	}
+
+	public void minusReplyLikeCount() {
+		this.replyLikes -= 1;
 	}
 
 }

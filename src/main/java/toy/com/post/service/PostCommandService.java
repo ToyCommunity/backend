@@ -63,7 +63,7 @@ public class PostCommandService {
 		post.deletePost();
 	}
 
-	public void updateLikePost(Long postId) {
+	public void likePost(Long postId) {
 
 		// TODO(박종빈) 추후 유저 벧리데이션으로 유저값 갖고옴
 		// 테스트를 위한 셈플
@@ -74,14 +74,22 @@ public class PostCommandService {
 			.build();
 
 		Post likePost = findPostByPostId(postId);
-		likePost.updatePostLikeCount();
+		likePost.plusPostLikeCount();
 
 		postRepository.save(likePost);
-
 		postAdditionalRepository.save(PostAdditional.builder()
 			.reactionPost(likePost)
 			.reactionPostUser(sampleUser)
 			.build());
+	}
+
+	public void disLikePost(Long postId) {
+
+		Post disLikePost = findPostByPostId(postId);
+		disLikePost.minusPostLikeCount();
+
+		postRepository.save(disLikePost);
+		postAdditionalRepository.deleteAll(disLikePost.getPostAdditionalList());
 	}
 
 	public void updatePostViewCount(Long postId) {

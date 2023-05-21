@@ -6,7 +6,6 @@ import lombok.Builder;
 import toy.com.post.domain.Reply;
 import toy.com.post.domain.ReplyStatus;
 
-@Builder
 public record ReplyDto(String content,
 					   int replyLikes,
 					   ReplyStatus replyStatus,
@@ -14,6 +13,9 @@ public record ReplyDto(String content,
 					   String replyWriterEmai,
 					   String replyWriterNickName,
 					   LocalDateTime createdAt) {
+
+	@Builder
+	public ReplyDto {}
 
 	public static ReplyDto entityToDto(Reply reply) {
 		return ReplyDto.builder()
